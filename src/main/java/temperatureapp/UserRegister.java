@@ -114,8 +114,10 @@ public class UserRegister extends javax.swing.JFrame {
         registerButton.setBackground(new java.awt.Color(252, 202, 62));
         registerButton.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         registerButton.setText("enviar.");
+        registerButton.setBorder(null);
         registerButton.setOpaque(true);
-        jPanel1.add(registerButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 720, -1, -1));
+        registerButton.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel1.add(registerButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 700, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
