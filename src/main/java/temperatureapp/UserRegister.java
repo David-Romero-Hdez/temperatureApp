@@ -35,12 +35,10 @@ public class UserRegister extends javax.swing.JFrame {
         lastTextField = new javax.swing.JTextField();
         userTextField = new javax.swing.JTextField();
         passwordInitial = new javax.swing.JPasswordField();
-        passwordConfirm = new javax.swing.JPasswordField();
         NameLabel = new javax.swing.JLabel();
         LastNameLabel = new javax.swing.JLabel();
         userLabel = new javax.swing.JLabel();
         passwordLabel = new javax.swing.JLabel();
-        passwordConfLabel = new javax.swing.JLabel();
         registerButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -97,11 +95,6 @@ public class UserRegister extends javax.swing.JFrame {
         passwordInitial.setPreferredSize(new java.awt.Dimension(380, 50));
         jPanel1.add(passwordInitial, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 530, -1, -1));
 
-        passwordConfirm.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        passwordConfirm.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        passwordConfirm.setPreferredSize(new java.awt.Dimension(380, 50));
-        jPanel1.add(passwordConfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 640, -1, -1));
-
         NameLabel.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
         NameLabel.setText("NOMBRES");
         jPanel1.add(NameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, -1, -1));
@@ -117,10 +110,6 @@ public class UserRegister extends javax.swing.JFrame {
         passwordLabel.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
         passwordLabel.setText("CLAVE");
         jPanel1.add(passwordLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 510, -1, -1));
-
-        passwordConfLabel.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
-        passwordConfLabel.setText("CONFIRMAR CLAVE");
-        jPanel1.add(passwordConfLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 620, -1, -1));
 
         registerButton.setBackground(new java.awt.Color(252, 202, 62));
         registerButton.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
@@ -193,8 +182,6 @@ public class UserRegister extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField lastTextField;
     private javax.swing.JTextField namesTextField;
-    private javax.swing.JLabel passwordConfLabel;
-    private javax.swing.JPasswordField passwordConfirm;
     private javax.swing.JPasswordField passwordInitial;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JButton registerButton;

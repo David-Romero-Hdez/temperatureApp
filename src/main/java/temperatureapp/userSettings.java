@@ -42,6 +42,7 @@ public class userSettings extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        deleteBtn = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -88,7 +89,7 @@ public class userSettings extends javax.swing.JFrame {
         jPanel1.add(userTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 500, -1, -1));
 
         userTitleLabel.setFont(new java.awt.Font("SansSerif", 0, 30)); // NOI18N
-        userTitleLabel.setText("cambiar informacion de usuario");
+        userTitleLabel.setText("cambiar información de usuario");
         jPanel1.add(userTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, -1, -1));
 
         passwordField.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
@@ -98,9 +99,10 @@ public class userSettings extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(252, 202, 62));
         jButton1.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         jButton1.setText("enviar.");
+        jButton1.setBorder(null);
         jButton1.setOpaque(true);
         jButton1.setPreferredSize(new java.awt.Dimension(180, 50));
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 700, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 700, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
         jLabel1.setText("NOMBRES");
@@ -117,6 +119,15 @@ public class userSettings extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
         jLabel4.setText("CLAVE");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 590, -1, -1));
+
+        deleteBtn.setBackground(new java.awt.Color(238, 0, 46));
+        deleteBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        deleteBtn.setForeground(new java.awt.Color(255, 255, 255));
+        deleteBtn.setText("Eliminar");
+        deleteBtn.setBorder(null);
+        deleteBtn.setOpaque(true);
+        deleteBtn.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel1.add(deleteBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 700, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -173,6 +184,7 @@ public class userSettings extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel betaLabel;
+    private javax.swing.JButton deleteBtn;
     private javax.swing.JLabel engineLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
