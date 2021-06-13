@@ -34,6 +34,7 @@ public class LoadingScreen extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        registerBtn = new javax.swing.JButton();
         backgroundLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -42,7 +43,7 @@ public class LoadingScreen extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(252, 202, 62));
         jButton1.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        jButton1.setText("continuar.");
+        jButton1.setText("logIn.");
         jButton1.setBorder(null);
         jButton1.setOpaque(true);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -50,7 +51,21 @@ public class LoadingScreen extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 510, 180, 70));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(425, 570, 180, 70));
+
+        registerBtn.setBackground(new java.awt.Color(10, 146, 255));
+        registerBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        registerBtn.setForeground(new java.awt.Color(255, 255, 255));
+        registerBtn.setText("nuevo usuario.");
+        registerBtn.setBorder(null);
+        registerBtn.setOpaque(true);
+        registerBtn.setPreferredSize(new java.awt.Dimension(300, 70));
+        registerBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerBtnActionPerformed(evt);
+            }
+        });
+        jPanel1.add(registerBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 570, -1, -1));
 
         backgroundLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -74,14 +89,20 @@ public class LoadingScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backgroundLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundLabelMouseClicked
-        
+
     }//GEN-LAST:event_backgroundLabelMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     LoginFrame mf = new LoginFrame();
-                mf.setVisible(true);
-                this.dispose();
+        LoginFrame mf = new LoginFrame();
+        mf.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
+        UserRegister ur = new UserRegister();
+        ur.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_registerBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -122,5 +143,6 @@ public class LoadingScreen extends javax.swing.JFrame {
     private javax.swing.JLabel backgroundLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton registerBtn;
     // End of variables declaration//GEN-END:variables
 }

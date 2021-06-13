@@ -5,6 +5,9 @@
  */
 package temperatureapp;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 /**
  *
  * @author davidromero
@@ -117,6 +120,11 @@ public class UserRegister extends javax.swing.JFrame {
         registerButton.setBorder(null);
         registerButton.setOpaque(true);
         registerButton.setPreferredSize(new java.awt.Dimension(180, 50));
+        registerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerButtonActionPerformed(evt);
+            }
+        });
         jPanel1.add(registerButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 700, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -140,6 +148,30 @@ public class UserRegister extends javax.swing.JFrame {
     private void userTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_userTextFieldActionPerformed
+
+    private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
+        Connection con;
+        try {
+            MyConnection mcon = new MyConnection();
+            con = mcon.returnConnection();
+            String sql = "INSERT into public.users (username,clave,nombres,apellidos,report) VALUES (?,?,?,?,?)";
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setString(1, userTextField.getText());
+            stm.setString(2, passwordInitial.getText());
+            stm.setString(3, namesTextField.getText());
+            stm.setString(4, lastTextField.getText());
+            stm.setBoolean(5, false);
+            stm.execute();
+            con.close();
+            LoginFrame lf = new LoginFrame();
+            lf.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+        }
+// TODO add your handling code here:
+    }//GEN-LAST:event_registerButtonActionPerformed
 
     /**
      * @param args the command line arguments

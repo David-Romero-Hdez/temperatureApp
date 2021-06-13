@@ -399,7 +399,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void userSettingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSettingsBtnActionPerformed
-        userSettings us = new userSettings();
+        userReportFrame us = new userReportFrame();
         us.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_userSettingsBtnActionPerformed
