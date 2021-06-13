@@ -239,6 +239,11 @@ public class userReportFrame extends javax.swing.JFrame {
         monitorBtn.setBorderPainted(false);
         monitorBtn.setOpaque(true);
         monitorBtn.setPreferredSize(new java.awt.Dimension(175, 60));
+        monitorBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                monitorBtnActionPerformed(evt);
+            }
+        });
         headerPanel.add(monitorBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 60, -1, -1));
 
         exitBtn.setBackground(new java.awt.Color(252, 202, 62));
@@ -272,7 +277,9 @@ public class userReportFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
-        // TODO add your handling code here:
+        extiFrame ef = new extiFrame();
+        ef.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_exitBtnActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -282,6 +289,12 @@ public class userReportFrame extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void monitorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monitorBtnActionPerformed
+        MainFrame mf = new MainFrame();
+        mf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_monitorBtnActionPerformed
 
     /**
      * @param args the command line arguments

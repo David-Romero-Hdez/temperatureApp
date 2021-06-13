@@ -222,8 +222,8 @@ public class userSettings extends javax.swing.JFrame {
             stm.setInt(1, userId);
             stm.execute();
             con.close();
-            MainFrame mf = new MainFrame();
-            mf.setVisible(true);
+            extiFrame ef = new extiFrame();
+            ef.setVisible(true);
             this.dispose();
         } catch (Exception e) {
             System.err.println("Got an exception!");

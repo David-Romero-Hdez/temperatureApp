@@ -389,7 +389,9 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SalirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirBtnActionPerformed
-        // TODO add your handling code here:
+     extiFrame ef = new extiFrame();
+     ef.setVisible(true);
+     this.dispose();
     }//GEN-LAST:event_SalirBtnActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
