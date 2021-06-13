@@ -33,6 +33,7 @@ public class MainFrame extends javax.swing.JFrame {
         temp = new javax.swing.JLabel();
         beta = new javax.swing.JLabel();
         SalirBtn = new javax.swing.JButton();
+        userSettingsBtn = new javax.swing.JButton();
         Body = new javax.swing.JPanel();
         temp1 = new javax.swing.JLabel();
         temp1Motor = new javax.swing.JLabel();
@@ -63,15 +64,20 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         Header.setBackground(new java.awt.Color(255, 255, 255));
+        Header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         engine.setBackground(new java.awt.Color(255, 255, 255));
         engine.setFont(new java.awt.Font("SansSerif", 0, 47)); // NOI18N
         engine.setText("engine");
+        Header.add(engine, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 79, -1, -1));
 
         temp.setBackground(new java.awt.Color(255, 255, 255));
         temp.setFont(new java.awt.Font("SansSerif", 1, 47)); // NOI18N
         temp.setText("temp");
+        Header.add(temp, new org.netbeans.lib.awtextra.AbsoluteConstraints(284, 79, -1, -1));
 
         beta.setBackground(new java.awt.Color(252, 202, 62));
         beta.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
@@ -79,6 +85,7 @@ public class MainFrame extends javax.swing.JFrame {
         beta.setText("beta");
         beta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         beta.setOpaque(true);
+        Header.add(beta, new org.netbeans.lib.awtextra.AbsoluteConstraints(341, 49, 67, 30));
 
         SalirBtn.setBackground(new java.awt.Color(252, 202, 62));
         SalirBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
@@ -91,39 +98,23 @@ public class MainFrame extends javax.swing.JFrame {
                 SalirBtnActionPerformed(evt);
             }
         });
+        Header.add(SalirBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1194, 65, 180, 65));
 
-        javax.swing.GroupLayout HeaderLayout = new javax.swing.GroupLayout(Header);
-        Header.setLayout(HeaderLayout);
-        HeaderLayout.setHorizontalGroup(
-            HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HeaderLayout.createSequentialGroup()
-                .addGap(131, 131, 131)
-                .addGroup(HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(beta, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(HeaderLayout.createSequentialGroup()
-                        .addComponent(engine)
-                        .addGap(0, 0, 0)
-                        .addComponent(temp)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(SalirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(100, 100, 100))
-        );
-        HeaderLayout.setVerticalGroup(
-            HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HeaderLayout.createSequentialGroup()
-                .addContainerGap(49, Short.MAX_VALUE)
-                .addGroup(HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderLayout.createSequentialGroup()
-                        .addComponent(beta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addGroup(HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(engine)
-                            .addComponent(temp))
-                        .addGap(26, 26, 26))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderLayout.createSequentialGroup()
-                        .addComponent(SalirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31))))
-        );
+        userSettingsBtn.setBackground(new java.awt.Color(0, 0, 0));
+        userSettingsBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        userSettingsBtn.setForeground(new java.awt.Color(255, 255, 255));
+        userSettingsBtn.setText("usuarios.");
+        userSettingsBtn.setBorder(null);
+        userSettingsBtn.setOpaque(true);
+        userSettingsBtn.setPreferredSize(new java.awt.Dimension(180, 60));
+        userSettingsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userSettingsBtnActionPerformed(evt);
+            }
+        });
+        Header.add(userSettingsBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 70, -1, -1));
+
+        jPanel1.add(Header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1474, 160));
 
         Body.setBackground(new java.awt.Color(196, 196, 196));
 
@@ -247,9 +238,12 @@ public class MainFrame extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(BodyLayout.createSequentialGroup()
                         .addComponent(temp2)
+                        .addGap(0, 0, 0)
                         .addComponent(temp3)
                         .addContainerGap(210, Short.MAX_VALUE))))
         );
+
+        jPanel1.add(Body, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 161, -1, -1));
 
         FooterLeft.setBackground(new java.awt.Color(226, 226, 226));
 
@@ -290,9 +284,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(CoolerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE))
                 .addGroup(FooterLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(enfriandoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(FooterLeftLayout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(117, Short.MAX_VALUE))
         );
         FooterLeftLayout.setVerticalGroup(
@@ -308,6 +300,8 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jPanel1.add(FooterLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, -1, 340));
 
         FooterRight.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -378,28 +372,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(83, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(Body, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(FooterLeft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(FooterRight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(Header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(Body, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(FooterRight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(FooterLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
+        jPanel1.add(FooterRight, new org.netbeans.lib.awtextra.AbsoluteConstraints(642, 460, 832, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -422,6 +395,12 @@ public class MainFrame extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void userSettingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSettingsBtnActionPerformed
+        userSettings us = new userSettings();
+        us.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_userSettingsBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -492,5 +471,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel temp1Motor;
     private javax.swing.JLabel temp2;
     private javax.swing.JLabel temp3;
+    private javax.swing.JButton userSettingsBtn;
     // End of variables declaration//GEN-END:variables
 }

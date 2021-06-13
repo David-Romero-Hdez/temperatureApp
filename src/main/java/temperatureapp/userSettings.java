@@ -5,17 +5,47 @@
  */
 package temperatureapp;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author davidromero
  */
 public class userSettings extends javax.swing.JFrame {
-
+       int userId = 2;
     /**
      * Creates new form userSettings
      */
     public userSettings() {
         initComponents();
+        
+//        LoginFrame log = new LoginFrame();
+       
+        Connection con;
+        MyConnection mcon = new MyConnection();
+        con = mcon.returnConnection();
+        String sql = "SELECT * FROM public.users where id=" + userId ;
+        Statement stm;
+        try {
+           stm = con.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            if (rs.next()) {
+                System.out.println("in populating");
+               nameTextField.setText(rs.getString("nombres"));
+               lastNameTextField.setText(rs.getString("apellidos"));
+               userTextField.setText(rs.getString("username"));
+               passwordField.setText(rs.getString("clave"));
+            } 
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
     }
 
     /**
@@ -102,6 +132,11 @@ public class userSettings extends javax.swing.JFrame {
         jButton1.setBorder(null);
         jButton1.setOpaque(true);
         jButton1.setPreferredSize(new java.awt.Dimension(180, 50));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 700, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
@@ -146,6 +181,27 @@ public class userSettings extends javax.swing.JFrame {
     private void userTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_userTextFieldActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Connection con;
+        try {
+        MyConnection mcon = new MyConnection();
+        con = mcon.returnConnection();
+        String sql = "UPDATE public.users SET username= ?, clave=? , nombres=?, apellidos=? WHERE id=?";
+        PreparedStatement stm = con.prepareStatement(sql);
+            stm.setString(1, userTextField.getText());
+            stm.setString(2, passwordField.getText());
+            stm.setString(3, nameTextField.getText());
+            stm.setString(4, lastNameTextField.getText());
+            stm.setInt(5, userId);
+            stm.executeUpdate();
+            con.close();
+            System.out.println("updated");
+        } catch (Exception e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

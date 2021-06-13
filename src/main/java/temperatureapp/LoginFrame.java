@@ -17,12 +17,14 @@ import javax.swing.JOptionPane;
  */
 public class LoginFrame extends javax.swing.JFrame {
 
+    int userId;
     /**
      * Creates new form LoginFrame
      */
     public LoginFrame() {
         initComponents();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -188,20 +190,19 @@ public class LoginFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_TfUsuarioActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Connection c = null;
+        Connection con;
+        MyConnection mcon = new MyConnection();
+        con = mcon.returnConnection();
+        String username = TfUsuario.getText();
+        String password = PfClave.getText();
+        String sql = "SELECT * FROM public.users where username='" + username + "' and clave ='" + password + "'";
+        Statement stm;
         try {
-            Class.forName("org.postgresql.Driver");
-            c = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:5432/temperatureApp",
-                            "postgres", "Root1098");
-
-            String username = TfUsuario.getText();
-            String password = PfClave.getText();
-
-            Statement stm = c.createStatement();
-            String sql = "SELECT * FROM public.users where username='" + username + "' and clave ='" + password + "'";
+           stm = con.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             if (rs.next()) {
+               userId = rs.getInt("id");
+                System.out.println(userId);
                 MainFrame mf = new MainFrame();
                 mf.setVisible(true);
                 this.dispose();
@@ -210,15 +211,12 @@ public class LoginFrame extends javax.swing.JFrame {
                 TfUsuario.setText("");
                 PfClave.setText("");
             }
-            
-            c.close();
-
+            con.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Opened database successfully");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void PfClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PfClaveActionPerformed
