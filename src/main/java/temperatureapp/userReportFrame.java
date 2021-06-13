@@ -5,6 +5,9 @@
  */
 package temperatureapp;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 /**
  *
  * @author davidromero
@@ -47,10 +50,10 @@ public class userReportFrame extends javax.swing.JFrame {
         footer2Panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        reportTextField = new javax.swing.JTextField();
+        undoReportTextField = new javax.swing.JTextField();
+        reportBtn = new javax.swing.JButton();
+        undoReportBtn = new javax.swing.JButton();
         footer1Panel = new javax.swing.JPanel();
         agendaBtn = new javax.swing.JButton();
         nuevoBtn = new javax.swing.JButton();
@@ -150,43 +153,53 @@ public class userReportFrame extends javax.swing.JFrame {
         jLabel5.setText("ELIMINAR REPORTE CON ID");
         footer2Panel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 165, -1, -1));
 
-        jTextField1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextField1.setPreferredSize(new java.awt.Dimension(380, 50));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        reportTextField.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        reportTextField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        reportTextField.setPreferredSize(new java.awt.Dimension(380, 50));
+        reportTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                reportTextFieldActionPerformed(evt);
             }
         });
-        footer2Panel.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 85, -1, -1));
+        footer2Panel.add(reportTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 85, -1, -1));
 
-        jTextField2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextField2.setPreferredSize(new java.awt.Dimension(380, 50));
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        undoReportTextField.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        undoReportTextField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        undoReportTextField.setPreferredSize(new java.awt.Dimension(380, 50));
+        undoReportTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                undoReportTextFieldActionPerformed(evt);
             }
         });
-        footer2Panel.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, -1, -1));
+        footer2Panel.add(undoReportTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, -1, -1));
 
-        jButton1.setBackground(new java.awt.Color(252, 202, 62));
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        jButton1.setText("enviar.");
-        jButton1.setBorder(null);
-        jButton1.setBorderPainted(false);
-        jButton1.setOpaque(true);
-        jButton1.setPreferredSize(new java.awt.Dimension(180, 50));
-        footer2Panel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 85, -1, -1));
+        reportBtn.setBackground(new java.awt.Color(252, 202, 62));
+        reportBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        reportBtn.setText("enviar.");
+        reportBtn.setBorder(null);
+        reportBtn.setBorderPainted(false);
+        reportBtn.setOpaque(true);
+        reportBtn.setPreferredSize(new java.awt.Dimension(180, 50));
+        reportBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportBtnActionPerformed(evt);
+            }
+        });
+        footer2Panel.add(reportBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 85, -1, -1));
 
-        jButton2.setBackground(new java.awt.Color(252, 202, 62));
-        jButton2.setFont(new java.awt.Font("Lucida Grande", 1, 30)); // NOI18N
-        jButton2.setText("enviar.");
-        jButton2.setBorder(null);
-        jButton2.setBorderPainted(false);
-        jButton2.setOpaque(true);
-        jButton2.setPreferredSize(new java.awt.Dimension(180, 50));
-        footer2Panel.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 190, -1, -1));
+        undoReportBtn.setBackground(new java.awt.Color(252, 202, 62));
+        undoReportBtn.setFont(new java.awt.Font("Lucida Grande", 1, 30)); // NOI18N
+        undoReportBtn.setText("enviar.");
+        undoReportBtn.setBorder(null);
+        undoReportBtn.setBorderPainted(false);
+        undoReportBtn.setOpaque(true);
+        undoReportBtn.setPreferredSize(new java.awt.Dimension(180, 50));
+        undoReportBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                undoReportBtnActionPerformed(evt);
+            }
+        });
+        footer2Panel.add(undoReportBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 190, -1, -1));
 
         backgroundPanel.add(footer2Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 500, 640, 300));
 
@@ -282,19 +295,57 @@ public class userReportFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_exitBtnActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void reportTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_reportTextFieldActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void undoReportTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoReportTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_undoReportTextFieldActionPerformed
 
     private void monitorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monitorBtnActionPerformed
         MainFrame mf = new MainFrame();
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_monitorBtnActionPerformed
+
+    private void reportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportBtnActionPerformed
+        int id = Integer.parseInt(reportTextField.getText());
+        Connection con;
+        try {
+            MyConnection mcon = new MyConnection();
+            con = mcon.returnConnection();
+            String sql = "UPDATE public.users SET report=? WHERE id=?";
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setBoolean(1, true);
+            stm.setInt(2, id);
+            stm.executeUpdate();
+            con.close();
+            reportTextField.setText("");
+        } catch (Exception e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_reportBtnActionPerformed
+
+    private void undoReportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoReportBtnActionPerformed
+        int id = Integer.parseInt(undoReportTextField.getText());
+        Connection con;
+        try {
+            MyConnection mcon = new MyConnection();
+            con = mcon.returnConnection();
+            String sql = "UPDATE public.users SET report=? WHERE id=?";
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setBoolean(1, false);
+            stm.setInt(2, id);
+            stm.executeUpdate();
+            con.close();
+            undoReportTextField.setText("");
+        } catch (Exception e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+        }
+    }//GEN-LAST:event_undoReportBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -341,8 +392,6 @@ public class userReportFrame extends javax.swing.JFrame {
     private javax.swing.JPanel footer2Panel;
     private javax.swing.JButton graphicBtn;
     private javax.swing.JPanel headerPanel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -353,8 +402,6 @@ public class userReportFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JButton monitorBtn;
     private javax.swing.JButton nuevoBtn;
@@ -362,7 +409,11 @@ public class userReportFrame extends javax.swing.JFrame {
     private javax.swing.JLabel number2Label;
     private javax.swing.JLabel number3Label;
     private javax.swing.JLabel number4Label;
+    private javax.swing.JButton reportBtn;
+    private javax.swing.JTextField reportTextField;
     private javax.swing.JLabel tempLabel;
+    private javax.swing.JButton undoReportBtn;
+    private javax.swing.JTextField undoReportTextField;
     private javax.swing.JLabel userTLabel;
     private javax.swing.JLabel usersTLabel;
     // End of variables declaration//GEN-END:variables
