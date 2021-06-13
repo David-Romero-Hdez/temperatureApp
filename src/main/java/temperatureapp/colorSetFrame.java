@@ -11,8 +11,10 @@ package temperatureapp;
  */
 public class colorSetFrame extends javax.swing.JFrame {
 
-    int newColors[];
-
+    int yellowColors[] = {252,202,62};
+    int pinkColors[] = {255,198,214};
+    int greenColors[] = {160,242,200};
+    Colors c = new Colors();
     /**
      * Creates new form colorSetFrame
      */
@@ -177,33 +179,18 @@ public class colorSetFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //[252,202,62]
-        newColors[0] = 252;
-        newColors[1] = 202;
-        newColors[2] = 62;
-        Colors c = new Colors();
-        c.setColors(newColors);
-        jLabel4.setBackground(new java.awt.Color(newColors[0], newColors[1], newColors[2]));
+        c.setColors(yellowColors);
+        jLabel4.setBackground(new java.awt.Color(yellowColors[0], yellowColors[1], yellowColors[2]));
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //[255,198,214]
-        newColors[0] = 255;
-        newColors[1] = 198;
-        newColors[2] = 214;
-        Colors c = new Colors();
-        c.setColors(newColors);
-        jLabel4.setBackground(new java.awt.Color(newColors[0], newColors[1], newColors[2]));
+        c.setColors(pinkColors);
+        jLabel4.setBackground(new java.awt.Color(pinkColors[0], pinkColors[1], pinkColors[2]));
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        //[160,242,200]
-        newColors[0] = 160;
-        newColors[1] = 242;
-        newColors[2] = 200;
-        Colors c = new Colors();
-        c.setColors(newColors);
-        jLabel4.setBackground(new java.awt.Color(newColors[0], newColors[1], newColors[2]));
+        c.setColors(greenColors);
+        jLabel4.setBackground(new java.awt.Color(greenColors[0], greenColors[1], greenColors[2]));
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
