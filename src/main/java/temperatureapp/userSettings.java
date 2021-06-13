@@ -16,30 +16,31 @@ import javax.swing.JOptionPane;
  * @author davidromero
  */
 public class userSettings extends javax.swing.JFrame {
-       int userId = 2;
+
+    int userId = 1;
+
     /**
      * Creates new form userSettings
      */
     public userSettings() {
         initComponents();
-        
+
 //        LoginFrame log = new LoginFrame();
-       
         Connection con;
         MyConnection mcon = new MyConnection();
         con = mcon.returnConnection();
-        String sql = "SELECT * FROM public.users where id=" + userId ;
+        String sql = "SELECT * FROM public.users where id=" + userId;
         Statement stm;
         try {
-           stm = con.createStatement();
+            stm = con.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             if (rs.next()) {
                 System.out.println("in populating");
-               nameTextField.setText(rs.getString("nombres"));
-               lastNameTextField.setText(rs.getString("apellidos"));
-               userTextField.setText(rs.getString("username"));
-               passwordField.setText(rs.getString("clave"));
-            } 
+                nameTextField.setText(rs.getString("nombres"));
+                lastNameTextField.setText(rs.getString("apellidos"));
+                userTextField.setText(rs.getString("username"));
+                passwordField.setText(rs.getString("clave"));
+            }
             con.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -162,6 +163,11 @@ public class userSettings extends javax.swing.JFrame {
         deleteBtn.setBorder(null);
         deleteBtn.setOpaque(true);
         deleteBtn.setPreferredSize(new java.awt.Dimension(180, 50));
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
         jPanel1.add(deleteBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 700, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -185,10 +191,10 @@ public class userSettings extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Connection con;
         try {
-        MyConnection mcon = new MyConnection();
-        con = mcon.returnConnection();
-        String sql = "UPDATE public.users SET username= ?, clave=? , nombres=?, apellidos=? WHERE id=?";
-        PreparedStatement stm = con.prepareStatement(sql);
+            MyConnection mcon = new MyConnection();
+            con = mcon.returnConnection();
+            String sql = "UPDATE public.users SET username= ?, clave=? , nombres=?, apellidos=? WHERE id=?";
+            PreparedStatement stm = con.prepareStatement(sql);
             stm.setString(1, userTextField.getText());
             stm.setString(2, passwordField.getText());
             stm.setString(3, nameTextField.getText());
@@ -197,11 +203,33 @@ public class userSettings extends javax.swing.JFrame {
             stm.executeUpdate();
             con.close();
             System.out.println("updated");
+            MainFrame mf = new MainFrame();
+            mf.setVisible(true);
+            this.dispose();
         } catch (Exception e) {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        Connection con;
+        try {
+            MyConnection mcon = new MyConnection();
+            con = mcon.returnConnection();
+            String sql = "DELETE from public.users WHERE id=?";
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setInt(1, userId);
+            stm.execute();
+            con.close();
+            MainFrame mf = new MainFrame();
+            mf.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+        }
+    }//GEN-LAST:event_deleteBtnActionPerformed
 
     /**
      * @param args the command line arguments
