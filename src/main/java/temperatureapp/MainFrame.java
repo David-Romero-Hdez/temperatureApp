@@ -10,11 +10,13 @@ package temperatureapp;
  * @author davidromero
  */
 public class MainFrame extends javax.swing.JFrame {
-
+     static int userId;
     /**
      * Creates new form MainFrame
+     * @param Id
      */
-    public MainFrame() {
+    public MainFrame(int Id) {
+        userId = Id;
         initComponents();
     }
 
@@ -399,7 +401,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void userSettingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSettingsBtnActionPerformed
-        userReportFrame us = new userReportFrame();
+        userReportFrame us = new userReportFrame(userId);
         us.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_userSettingsBtnActionPerformed
@@ -434,7 +436,8 @@ public class MainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainFrame().setVisible(true);
+               MainFrame mf = new MainFrame(userId);
+                       mf.setVisible(true);
             }
         });
     }

@@ -17,12 +17,13 @@ import javax.swing.JOptionPane;
  */
 public class userSettings extends javax.swing.JFrame {
 
-    int userId = 1;
+    static int userId;
 
     /**
      * Creates new form userSettings
      */
-    public userSettings() {
+    public userSettings(int Id) {
+        userId = Id;
         initComponents();
 
 //        LoginFrame log = new LoginFrame();
@@ -203,7 +204,7 @@ public class userSettings extends javax.swing.JFrame {
             stm.executeUpdate();
             con.close();
             System.out.println("updated");
-            MainFrame mf = new MainFrame();
+            MainFrame mf = new MainFrame(userId);
             mf.setVisible(true);
             this.dispose();
         } catch (Exception e) {
@@ -261,7 +262,8 @@ public class userSettings extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new userSettings().setVisible(true);
+                userSettings us = new userSettings(userId);
+                us.setVisible(true);
             }
         });
     }

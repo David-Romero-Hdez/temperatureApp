@@ -13,11 +13,12 @@ import java.sql.PreparedStatement;
  * @author davidromero
  */
 public class userReportFrame extends javax.swing.JFrame {
-
+    static int userId;
     /**
      * Creates new form userReportFrame
      */
-    public userReportFrame() {
+    public userReportFrame(int Id) {
+        userId = Id;
         initComponents();
     }
 
@@ -46,7 +47,6 @@ public class userReportFrame extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         number4Label = new javax.swing.JLabel();
-        graphicBtn = new javax.swing.JButton();
         footer2Panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -57,6 +57,7 @@ public class userReportFrame extends javax.swing.JFrame {
         footer1Panel = new javax.swing.JPanel();
         agendaBtn = new javax.swing.JButton();
         nuevoBtn = new javax.swing.JButton();
+        graphicBtn = new javax.swing.JButton();
         headerPanel = new javax.swing.JPanel();
         engineLabel = new javax.swing.JLabel();
         tempLabel = new javax.swing.JLabel();
@@ -128,17 +129,6 @@ public class userReportFrame extends javax.swing.JFrame {
         number4Label.setFont(new java.awt.Font("SansSerif", 0, 95)); // NOI18N
         number4Label.setText("112");
         mainPanel.add(number4Label, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 170, -1, -1));
-
-        graphicBtn.setBackground(new java.awt.Color(0, 0, 0));
-        graphicBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        graphicBtn.setForeground(new java.awt.Color(255, 255, 255));
-        graphicBtn.setText("Ver gráfica.");
-        graphicBtn.setBorder(null);
-        graphicBtn.setBorderPainted(false);
-        graphicBtn.setOpaque(true);
-        graphicBtn.setPreferredSize(new java.awt.Dimension(330, 60));
-        graphicBtn.setSize(new java.awt.Dimension(29, 29));
-        mainPanel.add(graphicBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, -1, -1));
 
         backgroundPanel.add(mainPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 1280, 340));
 
@@ -223,6 +213,20 @@ public class userReportFrame extends javax.swing.JFrame {
         nuevoBtn.setPreferredSize(new java.awt.Dimension(180, 60));
         footer1Panel.add(nuevoBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, -1, -1));
 
+        graphicBtn.setBackground(new java.awt.Color(0, 0, 0));
+        graphicBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        graphicBtn.setForeground(new java.awt.Color(255, 255, 255));
+        graphicBtn.setText("ajustes usuario");
+        graphicBtn.setBorderPainted(false);
+        graphicBtn.setOpaque(true);
+        graphicBtn.setPreferredSize(new java.awt.Dimension(330, 60));
+        graphicBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                graphicBtnActionPerformed(evt);
+            }
+        });
+        footer1Panel.add(graphicBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 380, -1));
+
         backgroundPanel.add(footer1Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 500, 640, 300));
 
         headerPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -304,7 +308,7 @@ public class userReportFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_undoReportTextFieldActionPerformed
 
     private void monitorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monitorBtnActionPerformed
-        MainFrame mf = new MainFrame();
+        MainFrame mf = new MainFrame(userId);
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_monitorBtnActionPerformed
@@ -347,6 +351,12 @@ public class userReportFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_undoReportBtnActionPerformed
 
+    private void graphicBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphicBtnActionPerformed
+        userSettings us = new userSettings(userId);
+        us.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_graphicBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -377,7 +387,8 @@ public class userReportFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new userReportFrame().setVisible(true);
+               userReportFrame ur =  new userReportFrame(userId);
+                       ur.setVisible(true);
             }
         });
     }

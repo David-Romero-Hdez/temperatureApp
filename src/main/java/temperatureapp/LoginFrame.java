@@ -203,7 +203,7 @@ public class LoginFrame extends javax.swing.JFrame {
             if (rs.next()) {
                userId = rs.getInt("id");
                 System.out.println(userId);
-                MainFrame mf = new MainFrame();
+                MainFrame mf = new MainFrame(userId);
                 mf.setVisible(true);
                 this.dispose();
             } else {
