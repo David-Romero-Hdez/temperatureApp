@@ -11,6 +11,8 @@ package temperatureapp;
  */
 public class colorSetFrame extends javax.swing.JFrame {
 
+    int newColors[];
+
     /**
      * Creates new form colorSetFrame
      */
@@ -75,6 +77,11 @@ public class colorSetFrame extends javax.swing.JFrame {
         jButton1.setPreferredSize(new java.awt.Dimension(320, 240));
         jButton1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 330, -1, -1));
 
         jButton2.setBackground(new java.awt.Color(255, 198, 214));
@@ -85,6 +92,11 @@ public class colorSetFrame extends javax.swing.JFrame {
         jButton2.setOpaque(true);
         jButton2.setPreferredSize(new java.awt.Dimension(320, 240));
         jButton2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 330, -1, -1));
 
         jButton3.setBackground(new java.awt.Color(160, 242, 200));
@@ -94,6 +106,11 @@ public class colorSetFrame extends javax.swing.JFrame {
         jButton3.setOpaque(true);
         jButton3.setPreferredSize(new java.awt.Dimension(320, 240));
         jButton3.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 330, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(252, 202, 62));
@@ -158,6 +175,36 @@ public class colorSetFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //[252,202,62]
+        newColors[0] = 252;
+        newColors[1] = 202;
+        newColors[2] = 62;
+        Colors c = new Colors();
+        c.setColors(newColors);
+        jLabel4.setBackground(new java.awt.Color(newColors[0], newColors[1], newColors[2]));
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        //[255,198,214]
+        newColors[0] = 255;
+        newColors[1] = 198;
+        newColors[2] = 214;
+        Colors c = new Colors();
+        c.setColors(newColors);
+        jLabel4.setBackground(new java.awt.Color(newColors[0], newColors[1], newColors[2]));
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        //[160,242,200]
+        newColors[0] = 160;
+        newColors[1] = 242;
+        newColors[2] = 200;
+        Colors c = new Colors();
+        c.setColors(newColors);
+        jLabel4.setBackground(new java.awt.Color(newColors[0], newColors[1], newColors[2]));
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
