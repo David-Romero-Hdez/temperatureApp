@@ -14,7 +14,8 @@ public class Colors {
     int globalColors[];
 
     public Colors() { 
-        globalColors = this.setColors({252, 202, 62})
+        int defaultColors[] = {252, 202, 62};
+        this.setColors(defaultColors);
     }
     
     public void setColors(int newColors[]){
