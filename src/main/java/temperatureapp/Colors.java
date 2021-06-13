@@ -11,7 +11,7 @@ package temperatureapp;
  */
 public class Colors {
 
-    int globalColors[];
+    int globalColors[] = {252, 202, 62};
 
     public Colors() { 
         int defaultColors[] = {252, 202, 62};
