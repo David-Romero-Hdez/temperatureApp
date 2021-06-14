@@ -14,10 +14,15 @@
     </repositories>
     <dependencies>
         <dependency>
-  <groupId>org.postgresql</groupId>
-  <artifactId>postgresql</artifactId> 
-  <version>42.2.10</version>
-</dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId> 
+            <version>42.2.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.paho</groupId>
+            <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+            <version>1.2.1</version>
+        </dependency>
         <dependency>
             <groupId>unknown.binary</groupId>
             <artifactId>AbsoluteLayout</artifactId>

@@ -5,19 +5,68 @@
  */
 package temperatureapp;
 
+import org.eclipse.paho.client.mqttv3.*;
+
 /**
  *
  * @author davidromero
  */
-public class MainFrame extends javax.swing.JFrame {
-     static int userId;
+public class MainFrame extends javax.swing.JFrame implements MqttCallback {
+
+    static int userId;
+
     /**
      * Creates new form MainFrame
+     *
      * @param Id
      */
     public MainFrame(int Id) {
         userId = Id;
         initComponents();
+
+        String topic = "tempApp/#";
+        int qos = 2;
+        String broker = "tcp://broker.hivemq.com";
+        String clientId = "tempAppClient";
+
+        try {
+            MqttAsyncClient sampleClient = new MqttAsyncClient(broker, clientId);
+            MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts.setCleanSession(true);
+
+            System.out.println("Connecting to broker: " + broker);
+            IMqttToken token = sampleClient.connect(connOpts);
+            System.out.println("Connected");
+            token.waitForCompletion();
+            sampleClient.setCallback(this);
+
+            sampleClient.subscribe(topic, qos);
+            System.out.println("Subscribed");
+        } catch (Exception me) {
+            if (me instanceof MqttException) {
+                System.out.println("reason " + ((MqttException) me).getReasonCode());
+            }
+            System.out.println("msg " + me.getMessage());
+            System.out.println("loc " + me.getLocalizedMessage());
+            System.out.println("cause " + me.getCause());
+            System.out.println("excep " + me);
+            me.printStackTrace();
+        }
+
+    }
+
+    public void connectionLost(Throwable arg0) {
+        System.err.println("connection lost");
+
+    }
+
+    public void deliveryComplete(IMqttDeliveryToken arg0) {
+        System.err.println("delivery complete");
+    }
+
+    public void messageArrived(String topic, MqttMessage message) throws Exception {
+        System.out.println("topic: " + topic);
+        System.out.println("message: " + new String(message.getPayload()));
     }
 
     /**
@@ -47,18 +96,18 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        tempLbl = new javax.swing.JLabel();
+        readingCountLbl = new javax.swing.JLabel();
+        avgTempLbl = new javax.swing.JLabel();
+        avgTempAll = new javax.swing.JLabel();
         FooterLeft = new javax.swing.JPanel();
         CoolerLabel = new javax.swing.JLabel();
         HeaterLabel = new javax.swing.JLabel();
         enfriandoLabel = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
+        heaterLbl = new javax.swing.JLabel();
         FooterRight = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        maxTmpTF = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         minTempTF = new javax.swing.JTextField();
@@ -94,7 +143,6 @@ public class MainFrame extends javax.swing.JFrame {
         SalirBtn.setText("salir.");
         SalirBtn.setBorder(null);
         SalirBtn.setBorderPainted(false);
-        SalirBtn.setOpaque(true);
         SalirBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SalirBtnActionPerformed(evt);
@@ -107,7 +155,6 @@ public class MainFrame extends javax.swing.JFrame {
         userSettingsBtn.setForeground(new java.awt.Color(255, 255, 255));
         userSettingsBtn.setText("usuarios.");
         userSettingsBtn.setBorder(null);
-        userSettingsBtn.setOpaque(true);
         userSettingsBtn.setPreferredSize(new java.awt.Dimension(180, 60));
         userSettingsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,17 +197,17 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel6.setText("arranque");
 
-        jLabel7.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
-        jLabel7.setText("110C");
+        tempLbl.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
+        tempLbl.setText("110C");
 
-        jLabel8.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
-        jLabel8.setText("11.3K");
+        readingCountLbl.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
+        readingCountLbl.setText("11.3K");
 
-        jLabel9.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
-        jLabel9.setText("110C");
+        avgTempLbl.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
+        avgTempLbl.setText("110C");
 
-        jLabel10.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
-        jLabel10.setText("110C");
+        avgTempAll.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
+        avgTempAll.setText("110C");
 
         javax.swing.GroupLayout BodyLayout = new javax.swing.GroupLayout(Body);
         Body.setLayout(BodyLayout);
@@ -179,9 +226,9 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(temp2)))
                     .addGroup(BodyLayout.createSequentialGroup()
                         .addGap(47, 47, 47)
-                        .addComponent(jLabel7)
+                        .addComponent(tempLbl)
                         .addGap(87, 87, 87)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(readingCountLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(9, 9, 9)
                 .addGroup(BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BodyLayout.createSequentialGroup()
@@ -192,7 +239,7 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(jLabel2)))
                     .addGroup(BodyLayout.createSequentialGroup()
                         .addGap(102, 102, 102)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(avgTempLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BodyLayout.createSequentialGroup()
                         .addGap(162, 162, 162)
@@ -203,7 +250,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(170, 170, 170))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BodyLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel10)
+                        .addComponent(avgTempAll)
                         .addGap(115, 115, 115))))
         );
         BodyLayout.setVerticalGroup(
@@ -233,10 +280,10 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(temp1Motor)
                                 .addGap(48, 48, 48)))
                         .addGroup(BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(readingCountLbl)
+                            .addComponent(tempLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(avgTempLbl)
+                            .addComponent(avgTempAll, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(BodyLayout.createSequentialGroup()
                         .addComponent(temp2)
@@ -268,12 +315,12 @@ public class MainFrame extends javax.swing.JFrame {
         enfriandoLabel.setText("Enfriando");
         enfriandoLabel.setOpaque(true);
 
-        jLabel11.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel11.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("En espera");
-        jLabel11.setOpaque(true);
+        heaterLbl.setBackground(new java.awt.Color(0, 0, 0));
+        heaterLbl.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        heaterLbl.setForeground(new java.awt.Color(255, 255, 255));
+        heaterLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        heaterLbl.setText("En espera");
+        heaterLbl.setOpaque(true);
 
         javax.swing.GroupLayout FooterLeftLayout = new javax.swing.GroupLayout(FooterLeft);
         FooterLeft.setLayout(FooterLeftLayout);
@@ -286,7 +333,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(CoolerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE))
                 .addGroup(FooterLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(enfriandoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(heaterLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(117, Short.MAX_VALUE))
         );
         FooterLeftLayout.setVerticalGroup(
@@ -299,7 +346,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addGroup(FooterLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(HeaterLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(heaterLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -311,13 +358,12 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
         jLabel12.setText("MAX TEMPERATURA");
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        maxTmpTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jButton1.setBackground(new java.awt.Color(252, 202, 62));
         jButton1.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         jButton1.setText("enviar.");
         jButton1.setBorder(null);
-        jButton1.setOpaque(true);
 
         jLabel13.setBackground(new java.awt.Color(255, 255, 255));
         jLabel13.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
@@ -330,7 +376,6 @@ public class MainFrame extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         jButton2.setText("enviar.");
         jButton2.setBorder(null);
-        jButton2.setOpaque(true);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -350,7 +395,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel13)
                     .addGroup(FooterRightLayout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(maxTmpTF, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel12))
@@ -364,7 +409,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(FooterRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(maxTmpTF, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -374,7 +419,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(83, Short.MAX_VALUE))
         );
 
-        jPanel1.add(FooterRight, new org.netbeans.lib.awtextra.AbsoluteConstraints(642, 460, 832, -1));
+        jPanel1.add(FooterRight, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 450, 832, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -391,9 +436,9 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SalirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirBtnActionPerformed
-     extiFrame ef = new extiFrame();
-     ef.setVisible(true);
-     this.dispose();
+        extiFrame ef = new extiFrame();
+        ef.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_SalirBtnActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -436,8 +481,8 @@ public class MainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-               MainFrame mf = new MainFrame(userId);
-                       mf.setVisible(true);
+                MainFrame mf = new MainFrame(userId);
+                mf.setVisible(true);
             }
         });
     }
@@ -450,14 +495,15 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel Header;
     private javax.swing.JLabel HeaterLabel;
     private javax.swing.JButton SalirBtn;
+    private javax.swing.JLabel avgTempAll;
+    private javax.swing.JLabel avgTempLbl;
     private javax.swing.JLabel beta;
     private javax.swing.JLabel enfriandoLabel;
     private javax.swing.JLabel engine;
+    private javax.swing.JLabel heaterLbl;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
@@ -465,17 +511,16 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField maxTmpTF;
     private javax.swing.JTextField minTempTF;
+    private javax.swing.JLabel readingCountLbl;
     private javax.swing.JLabel temp;
     private javax.swing.JLabel temp1;
     private javax.swing.JLabel temp1Motor;
     private javax.swing.JLabel temp2;
     private javax.swing.JLabel temp3;
+    private javax.swing.JLabel tempLbl;
     private javax.swing.JButton userSettingsBtn;
     // End of variables declaration//GEN-END:variables
 }

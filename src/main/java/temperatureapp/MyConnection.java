@@ -20,7 +20,7 @@ public class MyConnection {
             Class.forName("org.postgresql.Driver");
             con = DriverManager
                     .getConnection("jdbc:postgresql://localhost:5432/temperatureApp",
-                            "postgres", "Root1098");
+                            "postgres", "root");
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
