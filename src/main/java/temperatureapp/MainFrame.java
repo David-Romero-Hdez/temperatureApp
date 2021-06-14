@@ -7,6 +7,7 @@ package temperatureapp;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.IntSummaryStatistics;
 import org.eclipse.paho.client.mqttv3.*;
 
 /**
@@ -25,11 +26,11 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
      * @param Id
      */
     public void publish(MqttAsyncClient sampleClient, String topic, String content, int qos) {
-        System.out.println( topic + "Publishing message: " + content);
+        System.out.println(topic + "Publishing message: " + content);
         MqttMessage message = new MqttMessage(content.getBytes());
         message.setQos(qos);
         try {
-            sampleClient.publish("tempApp/motorState", message);
+            sampleClient.publish(topic, message);
         } catch (Exception me) {
             if (me instanceof MqttException) {
                 System.out.println("reason " + ((MqttException) me).getReasonCode());
@@ -66,9 +67,8 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
             sampleClient.subscribe("tempApp/#", qos);
             System.out.println("Subscribed");
             publish(sampleClient, "tempApp/motorState", "on", qos);
-            publish(sampleClient, "tempApp/motorState", "on", qos);
-            publish(sampleClient, "tempApp/motorState", "on", qos);
-            publish(sampleClient, "tempApp/motorState", "on", qos);
+            publish(sampleClient, "tempApp/minTemp", "20", qos);
+            publish(sampleClient, "tempApp/maxTemp", "30", qos);
 
         } catch (Exception me) {
             if (me instanceof MqttException) {
@@ -112,6 +112,9 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
                 break;
             case "tempApp/minTemp":
                 handleMinTempState(payload);
+                break;
+            case "tempApp/currenReading":
+                handleCurrenReading(payload);
                 break;
         }
     }
@@ -165,6 +168,28 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
 
     private void handleMinTempState(String payload) {
         this.minLbl.setText(payload + "C");
+    }
+
+    private void handleCurrenReading(String payload) {
+
+        int reading;
+        try {
+            reading = Integer.parseInt(payload);
+        } catch (NumberFormatException e) {
+            reading = 0;
+        }
+
+        readings.add(reading);
+        
+        IntSummaryStatistics stats = readings.stream()
+                                     .mapToInt((x) -> (int)x)
+                                     .summaryStatistics();
+        
+        
+        tempLbl.setText(reading + "C");
+        readingCountLbl.setText(stats.getCount()+ "");
+        avgTempLbl.setText(stats.getAverage()+ "C");
+        avgTempAll.setText(stats.getMax()+ "C");
     }
 
     /**
