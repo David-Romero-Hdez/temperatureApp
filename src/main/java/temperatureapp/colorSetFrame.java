@@ -11,10 +11,10 @@ package temperatureapp;
  */
 public class colorSetFrame extends javax.swing.JFrame {
 
-    int yellowColors[] = {252,202,62};
-    int pinkColors[] = {255,198,214};
-    int greenColors[] = {160,242,200};
-    Colors c = new Colors();
+    int yellowColors[] = {252, 202, 62};
+    int pinkColors[] = {255, 198, 214};
+    int greenColors[] = {160, 242, 200};
+
     /**
      * Creates new form colorSetFrame
      */
@@ -179,23 +179,17 @@ public class colorSetFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        c.setColors(yellowColors);
-        jLabel4.setBackground(new java.awt.Color(yellowColors[0], yellowColors[1], yellowColors[2]));
-        new LoadingScreen(c).setVisible(true);
+        new LoadingScreen(yellowColors).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        c.setColors(pinkColors);
-        jLabel4.setBackground(new java.awt.Color(pinkColors[0], pinkColors[1], pinkColors[2]));
-        new LoadingScreen(c).setVisible(true);
+        new LoadingScreen(pinkColors).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        c.setColors(greenColors);
-        jLabel4.setBackground(new java.awt.Color(greenColors[0], greenColors[1], greenColors[2]));
-        new LoadingScreen(c).setVisible(true);
+        new LoadingScreen(greenColors).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 

@@ -13,14 +13,16 @@ import java.sql.PreparedStatement;
  * @author davidromero
  */
 public class userReportFrame extends javax.swing.JFrame {
-    static Colors c = new Colors();
+    static int[] c;
     static int userId;
     /**
      * Creates new form userReportFrame
      */
-    public userReportFrame(int Id, Colors c) {
+    public userReportFrame(int Id, int[] col) {
+        c = col;
         userId = Id;
         initComponents();
+        updateColors(c);
     }
 
     /**
@@ -62,9 +64,9 @@ public class userReportFrame extends javax.swing.JFrame {
         headerPanel = new javax.swing.JPanel();
         engineLabel = new javax.swing.JLabel();
         tempLabel = new javax.swing.JLabel();
-        betaLabel = new javax.swing.JLabel();
+        beta = new javax.swing.JLabel();
         monitorBtn = new javax.swing.JButton();
-        exitBtn = new javax.swing.JButton();
+        SalirBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -241,13 +243,13 @@ public class userReportFrame extends javax.swing.JFrame {
         tempLabel.setText("temp");
         headerPanel.add(tempLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 40, -1, -1));
 
-        betaLabel.setBackground(new java.awt.Color(252, 202, 62));
-        betaLabel.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
-        betaLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        betaLabel.setText("beta");
-        betaLabel.setOpaque(true);
-        betaLabel.setPreferredSize(new java.awt.Dimension(70, 30));
-        headerPanel.add(betaLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, -1, -1));
+        beta.setBackground(new java.awt.Color(252, 202, 62));
+        beta.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
+        beta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        beta.setText("beta");
+        beta.setOpaque(true);
+        beta.setPreferredSize(new java.awt.Dimension(70, 30));
+        headerPanel.add(beta, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, -1, -1));
 
         monitorBtn.setBackground(new java.awt.Color(0, 0, 0));
         monitorBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
@@ -264,19 +266,19 @@ public class userReportFrame extends javax.swing.JFrame {
         });
         headerPanel.add(monitorBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 60, -1, -1));
 
-        exitBtn.setBackground(new java.awt.Color(252, 202, 62));
-        exitBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        exitBtn.setText("salir.");
-        exitBtn.setBorder(null);
-        exitBtn.setBorderPainted(false);
-        exitBtn.setOpaque(true);
-        exitBtn.setPreferredSize(new java.awt.Dimension(175, 60));
-        exitBtn.addActionListener(new java.awt.event.ActionListener() {
+        SalirBtn.setBackground(new java.awt.Color(252, 202, 62));
+        SalirBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        SalirBtn.setText("salir.");
+        SalirBtn.setBorder(null);
+        SalirBtn.setBorderPainted(false);
+        SalirBtn.setOpaque(true);
+        SalirBtn.setPreferredSize(new java.awt.Dimension(175, 60));
+        SalirBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitBtnActionPerformed(evt);
+                SalirBtnActionPerformed(evt);
             }
         });
-        headerPanel.add(exitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 60, -1, -1));
+        headerPanel.add(SalirBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 60, -1, -1));
 
         backgroundPanel.add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 160));
 
@@ -294,11 +296,11 @@ public class userReportFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
+    private void SalirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirBtnActionPerformed
         extiFrame ef = new extiFrame(c);
         ef.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_exitBtnActionPerformed
+    }//GEN-LAST:event_SalirBtnActionPerformed
 
     private void reportTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportTextFieldActionPerformed
         // TODO add your handling code here:
@@ -394,11 +396,11 @@ public class userReportFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton SalirBtn;
     private javax.swing.JButton agendaBtn;
     private javax.swing.JPanel backgroundPanel;
-    private javax.swing.JLabel betaLabel;
+    private javax.swing.JLabel beta;
     private javax.swing.JLabel engineLabel;
-    private javax.swing.JButton exitBtn;
     private javax.swing.JPanel footer1Panel;
     private javax.swing.JPanel footer2Panel;
     private javax.swing.JButton graphicBtn;
@@ -428,4 +430,14 @@ public class userReportFrame extends javax.swing.JFrame {
     private javax.swing.JLabel userTLabel;
     private javax.swing.JLabel usersTLabel;
     // End of variables declaration//GEN-END:variables
+private void updateColors(int[] c) {
+        java.awt.Color color = new java.awt.Color(c[0], c[1], c[2]);
+        reportBtn.setBackground(color);
+        undoReportBtn.setBackground(color);
+        SalirBtn.setBackground(color);
+        agendaBtn.setBackground(color);
+        nuevoBtn.setBackground(color);
+        graphicBtn.setBackground(color);
+        beta.setBackground(color);
+    }
 }

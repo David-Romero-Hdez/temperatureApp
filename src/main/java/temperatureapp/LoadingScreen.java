@@ -12,15 +12,18 @@ import javax.swing.ImageIcon;
  * @author davidromero
  */
 public class LoadingScreen extends javax.swing.JFrame {
-    static Colors c = new Colors();
+    static int[] c;
     ImageIcon image = new ImageIcon("WelcomeScreen.png");
 
     /**
      * Creates new form LoadingScreen
      */
-    public LoadingScreen(Colors c) {
+    public LoadingScreen(int[] col) {
+        c = col;
         initComponents();
         backgroundLabel.setIcon(image);
+        System.out.println(c[0]+" "+c[1]+" "+c[2]);
+        jButton1.setBackground(new java.awt.Color(c[0], c[1], c[2]));
     }
 
     /**

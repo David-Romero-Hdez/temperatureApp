@@ -16,13 +16,15 @@ import javax.swing.JOptionPane;
  * @author davidromero
  */
 public class LoginFrame extends javax.swing.JFrame {
-    static Colors c = new Colors();
+    static int[] c;
     int userId;
     /**
      * Creates new form LoginFrame
      */
-    public LoginFrame(Colors color) {
+    public LoginFrame(int[] col) {
+        c = col;
         initComponents();
+        updateColors(c);
     }
     
 
@@ -271,4 +273,9 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     // End of variables declaration//GEN-END:variables
+private void updateColors(int[] c) {
+        java.awt.Color color = new java.awt.Color(c[0], c[1], c[2]);
+        jButton1.setBackground(color);
+        betaLabel.setBackground(color);
+    }
 }

@@ -12,13 +12,14 @@ import javax.swing.ImageIcon;
  * @author davidromero
  */
 public class extiFrame extends javax.swing.JFrame {
-     static Colors c = new Colors();
+     static int[] c;
     ImageIcon image = new ImageIcon("WelcomeScreen.png");
 
     /**
      * Creates new form extiFrame
      */
-    public extiFrame(Colors c) {
+  public extiFrame(int[] col) {
+        c = col;
         initComponents();
         backgroundLabel.setIcon(image);
     }

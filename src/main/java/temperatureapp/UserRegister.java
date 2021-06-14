@@ -13,11 +13,12 @@ import java.sql.PreparedStatement;
  * @author davidromero
  */
 public class UserRegister extends javax.swing.JFrame {
- static Colors c = new Colors();
+ static int[] c;
     /**
      * Creates new form UserRegister
      */
-    public UserRegister(Colors c) {
+    public UserRegister(int[] col) {
+        c = col;
         initComponents();
     }
 

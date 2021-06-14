@@ -21,18 +21,19 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
     MqttAsyncClient sampleClient;
     
     static int userId;
-    static Colors c = new Colors();
+    static int[] c;
 
     /**
      * Creates new form MainFrame
      *
      * @param Id
      */
-    public MainFrame(int Id, Colors c) {
+   public MainFrame(int Id, int[] col) {
+        c = col;
         userId = Id;
         initComponents();
 
-        updateColors();
+        updateColors(c);
 
         int qos = 2;
         String broker = "tcp://broker.hivemq.com";
@@ -576,13 +577,14 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
     private javax.swing.JButton userSettingsBtn;
     // End of variables declaration//GEN-END:variables
 
-    private void updateColors() {
-        java.awt.Color color = new java.awt.Color(c.getColors()[0], c.getColors()[1], c.getColors()[2]);
+   private void updateColors(int[] c) {
+        java.awt.Color color = new java.awt.Color(c[0], c[1], c[2]);
         sendMaxBtn.setBackground(color);
         sendMinBtn.setBackground(color);
         SalirBtn.setBackground(color);
         CoolerLabel.setBackground(color);
         HeaterLabel.setBackground(color);
         MotorLabel.setBackground(color);
+        beta.setBackground(color);
     }
 }

@@ -17,14 +17,14 @@ import javax.swing.JOptionPane;
  */
 public class userSettings extends javax.swing.JFrame {
 
-    static Colors c = new Colors();
+    static int[] c;
     static int userId;
 
     /**
      * Creates new form userSettings
      */
-    public userSettings(int Id, Colors c) {
-        userId = Id;
+ public userSettings(int Id, int[] col) {
+        c = col;
         initComponents();
 
 //        LoginFrame log = new LoginFrame();
