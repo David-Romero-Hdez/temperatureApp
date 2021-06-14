@@ -8,7 +8,14 @@ package temperatureapp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,8 +23,11 @@ import java.sql.Statement;
  */
 public class userReportFrame extends javax.swing.JFrame {
 
+    JTable table;
     static int[] c;
     static int userId;
+    int reportedCount = 0;
+    int registeredCount = 0;
 
     /**
      * Creates new form userReportFrame
@@ -28,16 +38,13 @@ public class userReportFrame extends javax.swing.JFrame {
         initComponents();
         updateColors(c);
 
-        int reportedCount = 0;
-        int registeredCount = 0;
-
         Connection con;
         MyConnection mcon = new MyConnection();
         con = mcon.returnConnection();
         String sql = "SELECT * FROM public.users";
         Statement stm;
         try {
-            stm = con.createStatement();
+            stm = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
                 registeredCount++;
@@ -45,6 +52,8 @@ public class userReportFrame extends javax.swing.JFrame {
                     reportedCount++;
                 }
             }
+            rs.first();
+            table = new JTable(buildTableModel(rs));
             con.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,6 +63,32 @@ public class userReportFrame extends javax.swing.JFrame {
 
         reportCountLbl.setText(reportedCount + "");
         regCountLbl.setText(registeredCount + "");
+    }
+
+    public static DefaultTableModel buildTableModel(ResultSet rs)
+            throws SQLException {
+
+        ResultSetMetaData metaData = rs.getMetaData();
+
+        // names of columns
+        Vector<String> columnNames = new Vector<String>();
+        int columnCount = metaData.getColumnCount();
+        for (int column = 1; column <= columnCount; column++) {
+            columnNames.add(metaData.getColumnName(column));
+        }
+
+        // data of the table
+        Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+        while (rs.next()) {
+            Vector<Object> vector = new Vector<Object>();
+            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                vector.add(rs.getObject(columnIndex));
+            }
+            data.add(vector);
+        }
+
+        return new DefaultTableModel(data, columnNames);
+
     }
 
     /**
@@ -204,6 +239,11 @@ public class userReportFrame extends javax.swing.JFrame {
         agendaBtn.setText("Agenda");
         agendaBtn.setBorderPainted(false);
         agendaBtn.setPreferredSize(new java.awt.Dimension(180, 60));
+        agendaBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agendaBtnActionPerformed(evt);
+            }
+        });
         footer1Panel.add(agendaBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 100, -1, -1));
 
         nuevoBtn.setBackground(new java.awt.Color(10, 146, 255));
@@ -290,7 +330,7 @@ public class userReportFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_undoReportTextFieldActionPerformed
 
     private void reportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportBtnActionPerformed
-        int id = Integer.parseInt(reportTextField.getText());
+        int id = Integer.parseInt(reportTextField.getText());        
         Connection con;
         try {
             MyConnection mcon = new MyConnection();
@@ -302,6 +342,8 @@ public class userReportFrame extends javax.swing.JFrame {
             stm.executeUpdate();
             con.close();
             reportTextField.setText("");
+            reportedCount ++;
+            reportCountLbl.setText(reportedCount + "");
         } catch (Exception e) {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
@@ -321,6 +363,8 @@ public class userReportFrame extends javax.swing.JFrame {
             stm.executeUpdate();
             con.close();
             undoReportTextField.setText("");
+            reportedCount --;
+            reportCountLbl.setText(reportedCount + "");
         } catch (Exception e) {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
@@ -337,6 +381,10 @@ public class userReportFrame extends javax.swing.JFrame {
         us.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_graphicBtn1ActionPerformed
+
+    private void agendaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agendaBtnActionPerformed
+        JOptionPane.showMessageDialog(null, new JScrollPane(table));
+    }//GEN-LAST:event_agendaBtnActionPerformed
 
     /**
      * @param args the command line arguments
