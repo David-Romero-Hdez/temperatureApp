@@ -6,6 +6,7 @@
 package temperatureapp;
 
 import java.awt.Color;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.IntSummaryStatistics;
 import org.eclipse.paho.client.mqttv3.*;
@@ -182,16 +183,18 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         }
 
         readings.add(reading);
-        
+
         IntSummaryStatistics stats = readings.stream()
-                                     .mapToInt((x) -> (int)x)
-                                     .summaryStatistics();
-        
-        
+                .mapToInt((x) -> (int) x)
+                .summaryStatistics();
+
         tempLbl.setText(reading + "C");
-        readingCountLbl.setText(stats.getCount()+ "");
-        avgTempLbl.setText(stats.getAverage()+ "C");
-        avgTempAll.setText(stats.getMax()+ "C");
+        readingCountLbl.setText(stats.getCount() + "");
+        avgTempLbl.setText(
+                new DecimalFormat("#.##").format(stats.getAverage())
+                + "C"
+        );
+        avgTempAll.setText(stats.getMax() + "C");
     }
 
     /**
@@ -329,15 +332,15 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel4.setText("Temperatura");
-        Body.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 30, -1, -1));
+        Body.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 30, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jLabel5.setText("promedio desde");
-        Body.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 60, -1, -1));
+        jLabel5.setText("mas alta desde");
+        Body.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 60, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel6.setText("arranque");
-        Body.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 90, 100, -1));
+        Body.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 90, 100, -1));
 
         tempLbl.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
         tempLbl.setText("0C");
@@ -349,11 +352,11 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
 
         avgTempLbl.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
         avgTempLbl.setText("0C");
-        Body.add(avgTempLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 130, 252, -1));
+        Body.add(avgTempLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 130, 320, -1));
 
         avgTempAll.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
         avgTempAll.setText("0C");
-        Body.add(avgTempAll, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 120, -1, 134));
+        Body.add(avgTempAll, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 120, 300, 134));
 
         jPanel1.add(Body, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 161, -1, -1));
 
