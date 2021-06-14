@@ -181,6 +181,8 @@ public class colorSetFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         c.setColors(yellowColors);
         jLabel4.setBackground(new java.awt.Color(yellowColors[0], yellowColors[1], yellowColors[2]));
+        new LoginFrame(c).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

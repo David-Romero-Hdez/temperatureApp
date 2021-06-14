@@ -42,7 +42,7 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         }
     }
 
-    public MainFrame(int Id, Colors color) {
+    public MainFrame(int Id, Colors c) {
         userId = Id;
         initComponents();
 
@@ -444,7 +444,7 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SalirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirBtnActionPerformed
-        extiFrame ef = new extiFrame();
+        extiFrame ef = new extiFrame(c);
         ef.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_SalirBtnActionPerformed
@@ -454,7 +454,7 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
     }//GEN-LAST:event_sendMinBtnActionPerformed
 
     private void userSettingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSettingsBtnActionPerformed
-        userReportFrame us = new userReportFrame(userId);
+        userReportFrame us = new userReportFrame(userId, c);
         us.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_userSettingsBtnActionPerformed

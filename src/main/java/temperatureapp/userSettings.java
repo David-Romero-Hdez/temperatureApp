@@ -17,12 +17,13 @@ import javax.swing.JOptionPane;
  */
 public class userSettings extends javax.swing.JFrame {
 
+    static Colors c = new Colors();
     static int userId;
 
     /**
      * Creates new form userSettings
      */
-    public userSettings(int Id) {
+    public userSettings(int Id, Colors c) {
         userId = Id;
         initComponents();
 
@@ -204,7 +205,7 @@ public class userSettings extends javax.swing.JFrame {
             stm.executeUpdate();
             con.close();
             System.out.println("updated");
-            MainFrame mf = new MainFrame(userId);
+            MainFrame mf = new MainFrame(userId, c);
             mf.setVisible(true);
             this.dispose();
         } catch (Exception e) {
@@ -223,7 +224,7 @@ public class userSettings extends javax.swing.JFrame {
             stm.setInt(1, userId);
             stm.execute();
             con.close();
-            extiFrame ef = new extiFrame();
+            extiFrame ef = new extiFrame(c);
             ef.setVisible(true);
             this.dispose();
         } catch (Exception e) {
@@ -262,8 +263,7 @@ public class userSettings extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                userSettings us = new userSettings(userId);
-                us.setVisible(true);
+                new userSettings(userId, c).setVisible(true);
             }
         });
     }

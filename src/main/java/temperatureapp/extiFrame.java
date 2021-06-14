@@ -12,13 +12,13 @@ import javax.swing.ImageIcon;
  * @author davidromero
  */
 public class extiFrame extends javax.swing.JFrame {
-
+     static Colors c = new Colors();
     ImageIcon image = new ImageIcon("WelcomeScreen.png");
 
     /**
      * Creates new form extiFrame
      */
-    public extiFrame() {
+    public extiFrame(Colors c) {
         initComponents();
         backgroundLabel.setIcon(image);
     }
@@ -89,7 +89,7 @@ public class extiFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void logInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logInBtnActionPerformed
-        LoginFrame mf = new LoginFrame();
+        LoginFrame mf = new LoginFrame(c);
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_logInBtnActionPerformed
@@ -128,7 +128,7 @@ public class extiFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new extiFrame().setVisible(true);
+                new extiFrame(c).setVisible(true);
             }
         });
     }

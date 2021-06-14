@@ -13,11 +13,11 @@ import java.sql.PreparedStatement;
  * @author davidromero
  */
 public class UserRegister extends javax.swing.JFrame {
-
+ static Colors c = new Colors();
     /**
      * Creates new form UserRegister
      */
-    public UserRegister() {
+    public UserRegister(Colors c) {
         initComponents();
     }
 
@@ -163,7 +163,7 @@ public class UserRegister extends javax.swing.JFrame {
             stm.setBoolean(5, false);
             stm.execute();
             con.close();
-            LoginFrame lf = new LoginFrame();
+            LoginFrame lf = new LoginFrame(c);
             lf.setVisible(true);
             this.dispose();
         } catch (Exception e) {
@@ -203,7 +203,7 @@ public class UserRegister extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UserRegister().setVisible(true);
+                new UserRegister(c).setVisible(true);
             }
         });
     }

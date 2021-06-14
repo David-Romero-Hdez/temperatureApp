@@ -16,12 +16,12 @@ import javax.swing.JOptionPane;
  * @author davidromero
  */
 public class LoginFrame extends javax.swing.JFrame {
-
+    static Colors c = new Colors();
     int userId;
     /**
      * Creates new form LoginFrame
      */
-    public LoginFrame() {
+    public LoginFrame(Colors color) {
         initComponents();
     }
     
@@ -203,7 +203,7 @@ public class LoginFrame extends javax.swing.JFrame {
             if (rs.next()) {
                userId = rs.getInt("id");
                 System.out.println(userId);
-                MainFrame mf = new MainFrame(userId);
+                MainFrame mf = new MainFrame(userId, c);
                 mf.setVisible(true);
                 this.dispose();
             } else {
@@ -253,7 +253,7 @@ public class LoginFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginFrame().setVisible(true);
+                new LoginFrame(c).setVisible(true);
             }
         });
     }

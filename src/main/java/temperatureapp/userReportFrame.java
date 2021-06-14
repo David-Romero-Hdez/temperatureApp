@@ -13,11 +13,12 @@ import java.sql.PreparedStatement;
  * @author davidromero
  */
 public class userReportFrame extends javax.swing.JFrame {
+    static Colors c = new Colors();
     static int userId;
     /**
      * Creates new form userReportFrame
      */
-    public userReportFrame(int Id) {
+    public userReportFrame(int Id, Colors c) {
         userId = Id;
         initComponents();
     }
@@ -294,7 +295,7 @@ public class userReportFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
-        extiFrame ef = new extiFrame();
+        extiFrame ef = new extiFrame(c);
         ef.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_exitBtnActionPerformed
@@ -308,7 +309,7 @@ public class userReportFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_undoReportTextFieldActionPerformed
 
     private void monitorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monitorBtnActionPerformed
-        MainFrame mf = new MainFrame(userId);
+        MainFrame mf = new MainFrame(userId, c);
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_monitorBtnActionPerformed
@@ -352,7 +353,7 @@ public class userReportFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_undoReportBtnActionPerformed
 
     private void graphicBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphicBtnActionPerformed
-        userSettings us = new userSettings(userId);
+        userSettings us = new userSettings(userId,c);
         us.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_graphicBtnActionPerformed
@@ -387,8 +388,7 @@ public class userReportFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-               userReportFrame ur =  new userReportFrame(userId);
-                       ur.setVisible(true);
+               new userReportFrame(userId, c).setVisible(true);
             }
         });
     }

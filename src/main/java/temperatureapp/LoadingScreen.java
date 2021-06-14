@@ -12,13 +12,13 @@ import javax.swing.ImageIcon;
  * @author davidromero
  */
 public class LoadingScreen extends javax.swing.JFrame {
-
+    static Colors c = new Colors();
     ImageIcon image = new ImageIcon("WelcomeScreen.png");
 
     /**
      * Creates new form LoadingScreen
      */
-    public LoadingScreen() {
+    public LoadingScreen(Colors c) {
         initComponents();
         backgroundLabel.setIcon(image);
     }
@@ -93,13 +93,13 @@ public class LoadingScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_backgroundLabelMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        LoginFrame mf = new LoginFrame();
+        LoginFrame mf = new LoginFrame(c);
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
-        UserRegister ur = new UserRegister();
+        UserRegister ur = new UserRegister(c);
         ur.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_registerBtnActionPerformed
@@ -134,7 +134,7 @@ public class LoadingScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoadingScreen().setVisible(true);
+                new LoadingScreen(c).setVisible(true);
             }
         });
     }
