@@ -181,18 +181,22 @@ public class colorSetFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         c.setColors(yellowColors);
         jLabel4.setBackground(new java.awt.Color(yellowColors[0], yellowColors[1], yellowColors[2]));
-        new LoginFrame(c).setVisible(true);
+        new LoadingScreen(c).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         c.setColors(pinkColors);
         jLabel4.setBackground(new java.awt.Color(pinkColors[0], pinkColors[1], pinkColors[2]));
+        new LoadingScreen(c).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         c.setColors(greenColors);
         jLabel4.setBackground(new java.awt.Color(greenColors[0], greenColors[1], greenColors[2]));
+        new LoadingScreen(c).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
