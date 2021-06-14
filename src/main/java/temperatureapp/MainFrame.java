@@ -5,6 +5,7 @@
  */
 package temperatureapp;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import org.eclipse.paho.client.mqttv3.*;
 
@@ -16,15 +17,37 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
 
     ArrayList readings = new ArrayList<Integer>();
     static int userId;
+    static Colors c = new Colors();
 
     /**
      * Creates new form MainFrame
      *
      * @param Id
      */
-    public MainFrame(int Id) {
+    
+    public void publish(MqttAsyncClient sampleClient, String topic, String content, int qos){
+            System.out.println("Publishing message motorState: " + content);
+            MqttMessage message = new MqttMessage(content.getBytes());
+            message.setQos(qos);
+            try {
+            sampleClient.publish("tempApp/motorState", message);
+            } catch (Exception me) {
+            if (me instanceof MqttException) {
+                System.out.println("reason " + ((MqttException) me).getReasonCode());
+            }
+            System.out.println("msg " + me.getMessage());
+            System.out.println("loc " + me.getLocalizedMessage());
+            System.out.println("cause " + me.getCause());
+            System.out.println("excep " + me);
+            me.printStackTrace();
+        }
+    }
+    
+    public MainFrame(int Id, Colors color) {
         userId = Id;
         initComponents();
+        
+        updateColors();
 
         String topic = "tempApp/#";
         int qos = 2;
@@ -50,6 +73,8 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(qos);
             sampleClient.publish("tempApp/motorState", message);
+            
+            
 
         } catch (Exception me) {
             if (me instanceof MqttException) {
@@ -101,10 +126,12 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         switch (payload) {
             case "on": {
                 this.motorLbl.setText("Encendido");
+                this.motorLbl.setBackground(Color.decode("#00CA51"));
                 break;
             }
             case "off": {
                 this.motorLbl.setText("Apagado");
+                this.motorLbl.setBackground(Color.decode("#000000"));
                 break;
             }
         }
@@ -181,14 +208,14 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         enfriandoLabel = new javax.swing.JLabel();
         heaterLbl = new javax.swing.JLabel();
         motorLbl = new javax.swing.JLabel();
-        HeaterLabel1 = new javax.swing.JLabel();
+        MotorLabel = new javax.swing.JLabel();
         FooterRight = new javax.swing.JPanel();
         minLbl = new javax.swing.JLabel();
         maxTmpTF = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        sendMaxBtn = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         minTempTF = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        sendMinBtn = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         maxLbl = new javax.swing.JLabel();
 
@@ -348,12 +375,12 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         motorLbl.setOpaque(true);
         FooterLeft.add(motorLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 230, 281, 60));
 
-        HeaterLabel1.setBackground(new java.awt.Color(252, 202, 62));
-        HeaterLabel1.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        HeaterLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        HeaterLabel1.setText("MOTOR");
-        HeaterLabel1.setOpaque(true);
-        FooterLeft.add(HeaterLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 260, 60));
+        MotorLabel.setBackground(new java.awt.Color(252, 202, 62));
+        MotorLabel.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        MotorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        MotorLabel.setText("MOTOR");
+        MotorLabel.setOpaque(true);
+        FooterLeft.add(MotorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 260, 60));
 
         jPanel1.add(FooterLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 640, 340));
 
@@ -368,11 +395,11 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         maxTmpTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         FooterRight.add(maxTmpTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 290, 50));
 
-        jButton1.setBackground(new java.awt.Color(252, 202, 62));
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        jButton1.setText("enviar.");
-        jButton1.setBorder(null);
-        FooterRight.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, 180, 50));
+        sendMaxBtn.setBackground(new java.awt.Color(252, 202, 62));
+        sendMaxBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        sendMaxBtn.setText("enviar.");
+        sendMaxBtn.setBorder(null);
+        FooterRight.add(sendMaxBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, 180, 50));
 
         jLabel13.setBackground(new java.awt.Color(255, 255, 255));
         jLabel13.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
@@ -383,16 +410,16 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         minTempTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         FooterRight.add(minTempTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, 290, 50));
 
-        jButton2.setBackground(new java.awt.Color(252, 202, 62));
-        jButton2.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        jButton2.setText("enviar.");
-        jButton2.setBorder(null);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        sendMinBtn.setBackground(new java.awt.Color(252, 202, 62));
+        sendMinBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        sendMinBtn.setText("enviar.");
+        sendMinBtn.setBorder(null);
+        sendMinBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                sendMinBtnActionPerformed(evt);
             }
         });
-        FooterRight.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 210, 180, 50));
+        FooterRight.add(sendMinBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 210, 180, 50));
 
         jLabel14.setBackground(new java.awt.Color(255, 255, 255));
         jLabel14.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
@@ -426,9 +453,9 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         this.dispose();
     }//GEN-LAST:event_SalirBtnActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void sendMinBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMinBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_sendMinBtnActionPerformed
 
     private void userSettingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSettingsBtnActionPerformed
         userReportFrame us = new userReportFrame(userId);
@@ -466,7 +493,7 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                MainFrame mf = new MainFrame(userId);
+                MainFrame mf = new MainFrame(userId, c);
                 mf.setVisible(true);
             }
         });
@@ -479,7 +506,7 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
     private javax.swing.JPanel FooterRight;
     private javax.swing.JPanel Header;
     private javax.swing.JLabel HeaterLabel;
-    private javax.swing.JLabel HeaterLabel1;
+    private javax.swing.JLabel MotorLabel;
     private javax.swing.JButton SalirBtn;
     private javax.swing.JLabel avgTempAll;
     private javax.swing.JLabel avgTempLbl;
@@ -487,8 +514,6 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
     private javax.swing.JLabel enfriandoLabel;
     private javax.swing.JLabel engine;
     private javax.swing.JLabel heaterLbl;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -504,6 +529,8 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
     private javax.swing.JTextField minTempTF;
     private javax.swing.JLabel motorLbl;
     private javax.swing.JLabel readingCountLbl;
+    private javax.swing.JButton sendMaxBtn;
+    private javax.swing.JButton sendMinBtn;
     private javax.swing.JLabel temp;
     private javax.swing.JLabel temp1;
     private javax.swing.JLabel temp1Motor;
@@ -512,4 +539,14 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
     private javax.swing.JLabel tempLbl;
     private javax.swing.JButton userSettingsBtn;
     // End of variables declaration//GEN-END:variables
+
+    private void updateColors() {
+        java.awt.Color color = new java.awt.Color(c.getColors()[0],c.getColors()[1],c.getColors()[2]);
+        sendMaxBtn.setBackground(color);
+        sendMinBtn.setBackground(color);
+        SalirBtn.setBackground(color);
+        CoolerLabel.setBackground(color);
+        HeaterLabel.setBackground(color);
+        MotorLabel.setBackground(color);
+    }
 }
