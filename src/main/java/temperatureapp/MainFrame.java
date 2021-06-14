@@ -24,14 +24,13 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
      *
      * @param Id
      */
-    
-    public void publish(MqttAsyncClient sampleClient, String topic, String content, int qos){
-            System.out.println("Publishing message motorState: " + content);
-            MqttMessage message = new MqttMessage(content.getBytes());
-            message.setQos(qos);
-            try {
+    public void publish(MqttAsyncClient sampleClient, String topic, String content, int qos) {
+        System.out.println( topic + "Publishing message: " + content);
+        MqttMessage message = new MqttMessage(content.getBytes());
+        message.setQos(qos);
+        try {
             sampleClient.publish("tempApp/motorState", message);
-            } catch (Exception me) {
+        } catch (Exception me) {
             if (me instanceof MqttException) {
                 System.out.println("reason " + ((MqttException) me).getReasonCode());
             }
@@ -42,14 +41,13 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
             me.printStackTrace();
         }
     }
-    
+
     public MainFrame(int Id, Colors color) {
         userId = Id;
         initComponents();
-        
+
         updateColors();
 
-        String topic = "tempApp/#";
         int qos = 2;
         String broker = "tcp://broker.hivemq.com";
         String clientId = "tempAppClient";
@@ -65,16 +63,12 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
             token.waitForCompletion();
             sampleClient.setCallback(this);
 
-            sampleClient.subscribe(topic, qos);
+            sampleClient.subscribe("tempApp/#", qos);
             System.out.println("Subscribed");
-
-            String content = "on";
-            System.out.println("Publishing message motorState: " + content);
-            MqttMessage message = new MqttMessage(content.getBytes());
-            message.setQos(qos);
-            sampleClient.publish("tempApp/motorState", message);
-            
-            
+            publish(sampleClient, "tempApp/motorState", "on", qos);
+            publish(sampleClient, "tempApp/motorState", "on", qos);
+            publish(sampleClient, "tempApp/motorState", "on", qos);
+            publish(sampleClient, "tempApp/motorState", "on", qos);
 
         } catch (Exception me) {
             if (me instanceof MqttException) {
@@ -145,6 +139,7 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
             }
             case "off": {
                 this.enfriandoLabel.setText("En espera");
+                this.motorLbl.setBackground(Color.decode("#000000"));
                 break;
             }
         }
@@ -158,6 +153,7 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
             }
             case "off": {
                 this.heaterLbl.setText("En espera");
+                this.motorLbl.setBackground(Color.decode("#000000"));
                 break;
             }
         }
@@ -541,7 +537,7 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
     // End of variables declaration//GEN-END:variables
 
     private void updateColors() {
-        java.awt.Color color = new java.awt.Color(c.getColors()[0],c.getColors()[1],c.getColors()[2]);
+        java.awt.Color color = new java.awt.Color(c.getColors()[0], c.getColors()[1], c.getColors()[2]);
         sendMaxBtn.setBackground(color);
         sendMinBtn.setBackground(color);
         SalirBtn.setBackground(color);
