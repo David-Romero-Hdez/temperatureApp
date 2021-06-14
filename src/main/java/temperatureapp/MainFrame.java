@@ -5,6 +5,7 @@
  */
 package temperatureapp;
 
+import java.util.ArrayList;
 import org.eclipse.paho.client.mqttv3.*;
 
 /**
@@ -13,6 +14,7 @@ import org.eclipse.paho.client.mqttv3.*;
  */
 public class MainFrame extends javax.swing.JFrame implements MqttCallback {
 
+    ArrayList readings = new ArrayList<Integer>();
     static int userId;
 
     /**
@@ -42,6 +44,13 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
 
             sampleClient.subscribe(topic, qos);
             System.out.println("Subscribed");
+
+            String content = "on";
+            System.out.println("Publishing message motorState: " + content);
+            MqttMessage message = new MqttMessage(content.getBytes());
+            message.setQos(qos);
+            sampleClient.publish("tempApp/motorState", message);
+
         } catch (Exception me) {
             if (me instanceof MqttException) {
                 System.out.println("reason " + ((MqttException) me).getReasonCode());
@@ -65,8 +74,74 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
     }
 
     public void messageArrived(String topic, MqttMessage message) throws Exception {
+        String payload = new String(message.getPayload());
         System.out.println("topic: " + topic);
-        System.out.println("message: " + new String(message.getPayload()));
+        System.out.println("message: " + payload);
+
+        switch (topic) {
+            case "tempApp/motorState":
+                handleMotorState(payload);
+                break;
+            case "tempApp/coolerState":
+                handleCoolerState(payload);
+                break;
+            case "tempApp/heaterState":
+                handleHeaterState(payload);
+                break;
+            case "tempApp/maxTemp":
+                handleMaxTempState(payload);
+                break;
+            case "tempApp/minTemp":
+                handleMinTempState(payload);
+                break;
+        }
+    }
+
+    private void handleMotorState(String payload) {
+        switch (payload) {
+            case "on": {
+                this.motorLbl.setText("Encendido");
+                break;
+            }
+            case "off": {
+                this.motorLbl.setText("Apagado");
+                break;
+            }
+        }
+    }
+
+    private void handleCoolerState(String payload) {
+        switch (payload) {
+            case "on": {
+                this.enfriandoLabel.setText("Enfriando");
+                break;
+            }
+            case "off": {
+                this.enfriandoLabel.setText("En espera");
+                break;
+            }
+        }
+    }
+
+    private void handleHeaterState(String payload) {
+        switch (payload) {
+            case "on": {
+                this.heaterLbl.setText("Calentando");
+                break;
+            }
+            case "off": {
+                this.heaterLbl.setText("En espera");
+                break;
+            }
+        }
+    }
+
+    private void handleMaxTempState(String payload) {
+        this.maxLbl.setText(payload + "C");
+    }
+
+    private void handleMinTempState(String payload) {
+        this.minLbl.setText(payload + "C");
     }
 
     /**
@@ -105,15 +180,20 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         HeaterLabel = new javax.swing.JLabel();
         enfriandoLabel = new javax.swing.JLabel();
         heaterLbl = new javax.swing.JLabel();
+        motorLbl = new javax.swing.JLabel();
+        HeaterLabel1 = new javax.swing.JLabel();
         FooterRight = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
+        minLbl = new javax.swing.JLabel();
         maxTmpTF = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         minTempTF = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        maxLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -148,7 +228,7 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
                 SalirBtnActionPerformed(evt);
             }
         });
-        Header.add(SalirBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1194, 65, 180, 65));
+        Header.add(SalirBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 60, 180, 60));
 
         userSettingsBtn.setBackground(new java.awt.Color(0, 0, 0));
         userSettingsBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
@@ -161,216 +241,147 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
                 userSettingsBtnActionPerformed(evt);
             }
         });
-        Header.add(userSettingsBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 70, -1, -1));
+        Header.add(userSettingsBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 60, -1, 60));
 
-        jPanel1.add(Header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1474, 160));
+        jPanel1.add(Header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 160));
 
         Body.setBackground(new java.awt.Color(196, 196, 196));
+        Body.setPreferredSize(new java.awt.Dimension(1280, 303));
+        Body.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         temp1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         temp1.setText("Temperatura");
+        Body.add(temp1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
 
         temp1Motor.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         temp1Motor.setText("del motor");
+        Body.add(temp1Motor, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
 
         temp2.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         temp2.setText("Lecturas");
+        Body.add(temp2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 40, -1, -1));
 
         temp3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         temp3.setText("de temperatura");
+        Body.add(temp3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 60, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel1.setText("Temperatura");
+        Body.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 30, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel2.setText("promedio de la");
+        Body.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 60, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel3.setText("última hora");
+        Body.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 90, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel4.setText("Temperatura");
+        Body.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 30, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel5.setText("promedio desde");
+        Body.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 60, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel6.setText("arranque");
+        Body.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 90, 100, -1));
 
         tempLbl.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
-        tempLbl.setText("110C");
+        tempLbl.setText("0C");
+        Body.add(tempLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, -1));
 
         readingCountLbl.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
-        readingCountLbl.setText("11.3K");
+        readingCountLbl.setText("0");
+        Body.add(readingCountLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 130, 262, -1));
 
         avgTempLbl.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
-        avgTempLbl.setText("110C");
+        avgTempLbl.setText("0C");
+        Body.add(avgTempLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 130, 252, -1));
 
         avgTempAll.setFont(new java.awt.Font("SansSerif", 0, 90)); // NOI18N
-        avgTempAll.setText("110C");
-
-        javax.swing.GroupLayout BodyLayout = new javax.swing.GroupLayout(Body);
-        Body.setLayout(BodyLayout);
-        BodyLayout.setHorizontalGroup(
-            BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BodyLayout.createSequentialGroup()
-                .addGroup(BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(BodyLayout.createSequentialGroup()
-                        .addGap(95, 95, 95)
-                        .addGroup(BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(temp1Motor)
-                            .addComponent(temp1))
-                        .addGap(200, 200, 200)
-                        .addGroup(BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(temp3)
-                            .addComponent(temp2)))
-                    .addGroup(BodyLayout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(tempLbl)
-                        .addGap(87, 87, 87)
-                        .addComponent(readingCountLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(9, 9, 9)
-                .addGroup(BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(BodyLayout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addGroup(BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)))
-                    .addGroup(BodyLayout.createSequentialGroup()
-                        .addGap(102, 102, 102)
-                        .addComponent(avgTempLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(BodyLayout.createSequentialGroup()
-                        .addGap(162, 162, 162)
-                        .addGroup(BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addGap(170, 170, 170))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BodyLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(avgTempAll)
-                        .addGap(115, 115, 115))))
-        );
-        BodyLayout.setVerticalGroup(
-            BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BodyLayout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addGroup(BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(BodyLayout.createSequentialGroup()
-                        .addGroup(BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BodyLayout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(0, 0, 0)
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel6)
-                                .addGap(20, 20, 20))
-                            .addGroup(BodyLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, 0)
-                                .addComponent(jLabel2)
-                                .addGap(0, 0, 0)
-                                .addComponent(jLabel3)
-                                .addGap(26, 26, 26))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BodyLayout.createSequentialGroup()
-                                .addComponent(temp1)
-                                .addGap(0, 0, 0)
-                                .addComponent(temp1Motor)
-                                .addGap(48, 48, 48)))
-                        .addGroup(BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(readingCountLbl)
-                            .addComponent(tempLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(avgTempLbl)
-                            .addComponent(avgTempAll, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(BodyLayout.createSequentialGroup()
-                        .addComponent(temp2)
-                        .addGap(0, 0, 0)
-                        .addComponent(temp3)
-                        .addContainerGap(210, Short.MAX_VALUE))))
-        );
+        avgTempAll.setText("0C");
+        Body.add(avgTempAll, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 120, -1, 134));
 
         jPanel1.add(Body, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 161, -1, -1));
 
         FooterLeft.setBackground(new java.awt.Color(226, 226, 226));
+        FooterLeft.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         CoolerLabel.setBackground(new java.awt.Color(252, 202, 62));
         CoolerLabel.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         CoolerLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         CoolerLabel.setText("COOLER");
         CoolerLabel.setOpaque(true);
+        FooterLeft.add(CoolerLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 260, 60));
 
         HeaterLabel.setBackground(new java.awt.Color(252, 202, 62));
         HeaterLabel.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         HeaterLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         HeaterLabel.setText("HEATER");
         HeaterLabel.setOpaque(true);
+        FooterLeft.add(HeaterLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, 260, 60));
 
-        enfriandoLabel.setBackground(new java.awt.Color(0, 140, 241));
+        enfriandoLabel.setBackground(new java.awt.Color(0, 0, 0));
         enfriandoLabel.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         enfriandoLabel.setForeground(new java.awt.Color(255, 255, 255));
         enfriandoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        enfriandoLabel.setText("Enfriando");
+        enfriandoLabel.setText("cargando...");
         enfriandoLabel.setOpaque(true);
+        FooterLeft.add(enfriandoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 60, 281, 60));
 
         heaterLbl.setBackground(new java.awt.Color(0, 0, 0));
         heaterLbl.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         heaterLbl.setForeground(new java.awt.Color(255, 255, 255));
         heaterLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        heaterLbl.setText("En espera");
+        heaterLbl.setText("cargando...");
         heaterLbl.setOpaque(true);
+        FooterLeft.add(heaterLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 140, 281, 60));
 
-        javax.swing.GroupLayout FooterLeftLayout = new javax.swing.GroupLayout(FooterLeft);
-        FooterLeft.setLayout(FooterLeftLayout);
-        FooterLeftLayout.setHorizontalGroup(
-            FooterLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FooterLeftLayout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addGroup(FooterLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(HeaterLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(CoolerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE))
-                .addGroup(FooterLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(enfriandoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(heaterLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(117, Short.MAX_VALUE))
-        );
-        FooterLeftLayout.setVerticalGroup(
-            FooterLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FooterLeftLayout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addGroup(FooterLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(enfriandoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(CoolerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE))
-                .addGap(26, 26, 26)
-                .addGroup(FooterLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(HeaterLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                    .addComponent(heaterLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        motorLbl.setBackground(new java.awt.Color(0, 0, 0));
+        motorLbl.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        motorLbl.setForeground(new java.awt.Color(255, 255, 255));
+        motorLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        motorLbl.setText(" cargando...");
+        motorLbl.setOpaque(true);
+        FooterLeft.add(motorLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 230, 281, 60));
 
-        jPanel1.add(FooterLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, -1, 340));
+        HeaterLabel1.setBackground(new java.awt.Color(252, 202, 62));
+        HeaterLabel1.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        HeaterLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HeaterLabel1.setText("MOTOR");
+        HeaterLabel1.setOpaque(true);
+        FooterLeft.add(HeaterLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 260, 60));
+
+        jPanel1.add(FooterLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 640, 340));
 
         FooterRight.setBackground(new java.awt.Color(255, 255, 255));
+        FooterRight.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel12.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel12.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
-        jLabel12.setText("MAX TEMPERATURA");
+        minLbl.setBackground(new java.awt.Color(255, 255, 255));
+        minLbl.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
+        minLbl.setText("CARGANDO...");
+        FooterRight.add(minLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, -1, -1));
 
         maxTmpTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        FooterRight.add(maxTmpTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 290, 50));
 
         jButton1.setBackground(new java.awt.Color(252, 202, 62));
         jButton1.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         jButton1.setText("enviar.");
         jButton1.setBorder(null);
+        FooterRight.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, 180, 50));
 
         jLabel13.setBackground(new java.awt.Color(255, 255, 255));
         jLabel13.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
-        jLabel13.setText("MIN TEMPERATURA");
+        jLabel13.setText("MIN TEMPERATURA:");
+        FooterRight.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, -1, -1));
 
         minTempTF.setFont(new java.awt.Font("SansSerif", 0, 25)); // NOI18N
         minTempTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        FooterRight.add(minTempTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, 290, 50));
 
         jButton2.setBackground(new java.awt.Color(252, 202, 62));
         jButton2.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
@@ -381,45 +392,19 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
                 jButton2ActionPerformed(evt);
             }
         });
+        FooterRight.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 210, 180, 50));
 
-        javax.swing.GroupLayout FooterRightLayout = new javax.swing.GroupLayout(FooterRight);
-        FooterRight.setLayout(FooterRightLayout);
-        FooterRightLayout.setHorizontalGroup(
-            FooterRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FooterRightLayout.createSequentialGroup()
-                .addGap(109, 109, 109)
-                .addGroup(FooterRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(FooterRightLayout.createSequentialGroup()
-                        .addComponent(minTempTF, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel13)
-                    .addGroup(FooterRightLayout.createSequentialGroup()
-                        .addComponent(maxTmpTF, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel12))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        FooterRightLayout.setVerticalGroup(
-            FooterRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FooterRightLayout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(FooterRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(maxTmpTF, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
-                .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(FooterRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(minTempTF, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(83, Short.MAX_VALUE))
-        );
+        jLabel14.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel14.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
+        jLabel14.setText("MAX TEMPERATURA:");
+        FooterRight.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, -1, -1));
 
-        jPanel1.add(FooterRight, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 450, 832, -1));
+        maxLbl.setBackground(new java.awt.Color(255, 255, 255));
+        maxLbl.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
+        maxLbl.setText("CARGANDO...");
+        FooterRight.add(maxLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 70, -1, -1));
+
+        jPanel1.add(FooterRight, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 460, 640, 340));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -494,6 +479,7 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
     private javax.swing.JPanel FooterRight;
     private javax.swing.JPanel Header;
     private javax.swing.JLabel HeaterLabel;
+    private javax.swing.JLabel HeaterLabel1;
     private javax.swing.JButton SalirBtn;
     private javax.swing.JLabel avgTempAll;
     private javax.swing.JLabel avgTempLbl;
@@ -504,16 +490,19 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel maxLbl;
     private javax.swing.JTextField maxTmpTF;
+    private javax.swing.JLabel minLbl;
     private javax.swing.JTextField minTempTF;
+    private javax.swing.JLabel motorLbl;
     private javax.swing.JLabel readingCountLbl;
     private javax.swing.JLabel temp;
     private javax.swing.JLabel temp1;
