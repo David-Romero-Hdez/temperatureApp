@@ -113,8 +113,8 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
             case "tempApp/minTemp":
                 handleMinTempState(payload);
                 break;
-            case "tempApp/currenReading":
-                handleCurrenReading(payload);
+            case "tempApp/currentReading":
+                handleCurrentReading(payload);
                 break;
         }
     }
@@ -138,11 +138,12 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         switch (payload) {
             case "on": {
                 this.enfriandoLabel.setText("Enfriando");
+                this.enfriandoLabel.setBackground(Color.decode("#0A92FF"));
                 break;
             }
             case "off": {
                 this.enfriandoLabel.setText("En espera");
-                this.motorLbl.setBackground(Color.decode("#000000"));
+                this.enfriandoLabel.setBackground(Color.decode("#000000"));
                 break;
             }
         }
@@ -152,11 +153,12 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         switch (payload) {
             case "on": {
                 this.heaterLbl.setText("Calentando");
+                this.heaterLbl.setBackground(Color.decode("#E92736"));
                 break;
             }
             case "off": {
                 this.heaterLbl.setText("En espera");
-                this.motorLbl.setBackground(Color.decode("#000000"));
+                this.heaterLbl.setBackground(Color.decode("#000000"));
                 break;
             }
         }
@@ -170,7 +172,7 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         this.minLbl.setText(payload + "C");
     }
 
-    private void handleCurrenReading(String payload) {
+    private void handleCurrentReading(String payload) {
 
         int reading;
         try {
