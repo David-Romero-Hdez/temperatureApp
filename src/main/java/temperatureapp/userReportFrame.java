@@ -201,7 +201,6 @@ public class userReportFrame extends javax.swing.JFrame {
 
         agendaBtn.setBackground(new java.awt.Color(0, 0, 0));
         agendaBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        agendaBtn.setForeground(new java.awt.Color(255, 255, 255));
         agendaBtn.setText("Agenda");
         agendaBtn.setBorderPainted(false);
         agendaBtn.setOpaque(true);
@@ -218,7 +217,6 @@ public class userReportFrame extends javax.swing.JFrame {
 
         graphicBtn.setBackground(new java.awt.Color(0, 0, 0));
         graphicBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        graphicBtn.setForeground(new java.awt.Color(255, 255, 255));
         graphicBtn.setText("ajustes usuario");
         graphicBtn.setBorderPainted(false);
         graphicBtn.setOpaque(true);

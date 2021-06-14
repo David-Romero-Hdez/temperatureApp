@@ -23,10 +23,11 @@ public class userSettings extends javax.swing.JFrame {
     /**
      * Creates new form userSettings
      */
- public userSettings(int Id, int[] col) {
+    public userSettings(int Id, int[] col) {
+        userId = Id;
         c = col;
         initComponents();
-
+        updateColors(c);
 //        LoginFrame log = new LoginFrame();
         Connection con;
         MyConnection mcon = new MyConnection();
@@ -70,7 +71,7 @@ public class userSettings extends javax.swing.JFrame {
         userTextField = new javax.swing.JTextField();
         userTitleLabel = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
+        sendButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -129,18 +130,18 @@ public class userSettings extends javax.swing.JFrame {
         passwordField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.add(passwordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 620, 380, 50));
 
-        jButton1.setBackground(new java.awt.Color(252, 202, 62));
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        jButton1.setText("enviar.");
-        jButton1.setBorder(null);
-        jButton1.setOpaque(true);
-        jButton1.setPreferredSize(new java.awt.Dimension(180, 50));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        sendButton.setBackground(new java.awt.Color(252, 202, 62));
+        sendButton.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        sendButton.setText("enviar.");
+        sendButton.setBorder(null);
+        sendButton.setOpaque(true);
+        sendButton.setPreferredSize(new java.awt.Dimension(180, 50));
+        sendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                sendButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 700, -1, -1));
+        jPanel1.add(sendButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 700, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
         jLabel1.setText("NOMBRES");
@@ -160,7 +161,6 @@ public class userSettings extends javax.swing.JFrame {
 
         deleteBtn.setBackground(new java.awt.Color(238, 0, 46));
         deleteBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        deleteBtn.setForeground(new java.awt.Color(255, 255, 255));
         deleteBtn.setText("Eliminar");
         deleteBtn.setBorder(null);
         deleteBtn.setOpaque(true);
@@ -190,7 +190,7 @@ public class userSettings extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_userTextFieldActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         Connection con;
         try {
             MyConnection mcon = new MyConnection();
@@ -205,14 +205,13 @@ public class userSettings extends javax.swing.JFrame {
             stm.executeUpdate();
             con.close();
             System.out.println("updated");
-            MainFrame mf = new MainFrame(userId, c);
-            mf.setVisible(true);
+            new userReportFrame(userId, c).setVisible(true);
             this.dispose();
         } catch (Exception e) {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_sendButtonActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         Connection con;
@@ -272,7 +271,6 @@ public class userSettings extends javax.swing.JFrame {
     private javax.swing.JLabel betaLabel;
     private javax.swing.JButton deleteBtn;
     private javax.swing.JLabel engineLabel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -282,8 +280,15 @@ public class userSettings extends javax.swing.JFrame {
     private javax.swing.JTextField lastNameTextField;
     private javax.swing.JTextField nameTextField;
     private javax.swing.JPasswordField passwordField;
+    private javax.swing.JButton sendButton;
     private javax.swing.JLabel tempLabel;
     private javax.swing.JTextField userTextField;
     private javax.swing.JLabel userTitleLabel;
     // End of variables declaration//GEN-END:variables
+private void updateColors(int[] c) {
+        java.awt.Color color = new java.awt.Color(c[0], c[1], c[2]);
+        betaLabel.setBackground(color);
+        sendButton.setBackground(color);
+        deleteBtn.setBackground(color);
+    }
 }

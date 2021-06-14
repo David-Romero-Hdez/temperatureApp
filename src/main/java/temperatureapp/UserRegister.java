@@ -13,13 +13,16 @@ import java.sql.PreparedStatement;
  * @author davidromero
  */
 public class UserRegister extends javax.swing.JFrame {
- static int[] c;
+
+    static int[] c;
+
     /**
      * Creates new form UserRegister
      */
     public UserRegister(int[] col) {
         c = col;
         initComponents();
+        updateColors(c);
     }
 
     /**
@@ -224,4 +227,9 @@ public class UserRegister extends javax.swing.JFrame {
     private javax.swing.JLabel userLabel;
     private javax.swing.JTextField userTextField;
     // End of variables declaration//GEN-END:variables
+private void updateColors(int[] c) {
+        java.awt.Color color = new java.awt.Color(c[0], c[1], c[2]);
+        betaLabel.setBackground(color);
+        registerButton.setBackground(color);
+    }
 }

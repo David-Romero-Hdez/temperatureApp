@@ -22,8 +22,7 @@ public class LoadingScreen extends javax.swing.JFrame {
         c = col;
         initComponents();
         backgroundLabel.setIcon(image);
-        System.out.println(c[0]+" "+c[1]+" "+c[2]);
-        jButton1.setBackground(new java.awt.Color(c[0], c[1], c[2]));
+        updateColors(c); 
     }
 
     /**
@@ -58,7 +57,6 @@ public class LoadingScreen extends javax.swing.JFrame {
 
         registerBtn.setBackground(new java.awt.Color(10, 146, 255));
         registerBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        registerBtn.setForeground(new java.awt.Color(255, 255, 255));
         registerBtn.setText("nuevo usuario.");
         registerBtn.setBorder(null);
         registerBtn.setOpaque(true);
@@ -148,4 +146,9 @@ public class LoadingScreen extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton registerBtn;
     // End of variables declaration//GEN-END:variables
+private void updateColors(int[] c) {
+        java.awt.Color color = new java.awt.Color(c[0], c[1], c[2]);
+        jButton1.setBackground(color);
+        registerBtn.setBackground(color);
+    }
 }

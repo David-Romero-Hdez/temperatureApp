@@ -29,7 +29,9 @@ temperatureapp/LoginFrame.class
 temperatureapp/MyConnection.class
 temperatureapp/LoginFrame$3.class
 temperatureapp/MainFrame$2.class
+temperatureapp/ChartUsers$1.class
 temperatureapp/LoadingScreen$3.class
+temperatureapp/ChartUsers.class
 temperatureapp/userSettings$1.class
 temperatureapp/extiFrame$3.class
 temperatureapp/userReportFrame$4.class

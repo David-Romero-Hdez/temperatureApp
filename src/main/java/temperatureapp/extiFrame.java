@@ -22,6 +22,7 @@ public class extiFrame extends javax.swing.JFrame {
         c = col;
         initComponents();
         backgroundLabel.setIcon(image);
+        updateColors(c);
     }
 
     /**
@@ -49,7 +50,6 @@ public class extiFrame extends javax.swing.JFrame {
         logInBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         logInBtn.setText("ir a login");
         logInBtn.setBorder(null);
-        logInBtn.setOpaque(true);
         logInBtn.setPreferredSize(new java.awt.Dimension(180, 50));
         logInBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -60,10 +60,8 @@ public class extiFrame extends javax.swing.JFrame {
 
         exitBtn.setBackground(new java.awt.Color(238, 0, 46));
         exitBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        exitBtn.setForeground(new java.awt.Color(255, 255, 255));
         exitBtn.setText("cerrar.");
         exitBtn.setBorder(null);
-        exitBtn.setOpaque(true);
         exitBtn.setPreferredSize(new java.awt.Dimension(180, 50));
         exitBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -140,4 +138,9 @@ public class extiFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton logInBtn;
     // End of variables declaration//GEN-END:variables
+private void updateColors(int[] c) {
+        java.awt.Color color = new java.awt.Color(c[0], c[1], c[2]);
+        exitBtn.setBackground(color);
+        logInBtn.setBackground(color);
+    }
 }
