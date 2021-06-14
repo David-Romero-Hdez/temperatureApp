@@ -7,14 +7,18 @@ package temperatureapp;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  *
  * @author davidromero
  */
 public class userReportFrame extends javax.swing.JFrame {
+
     static int[] c;
     static int userId;
+
     /**
      * Creates new form userReportFrame
      */
@@ -23,6 +27,33 @@ public class userReportFrame extends javax.swing.JFrame {
         userId = Id;
         initComponents();
         updateColors(c);
+
+        int reportedCount = 0;
+        int registeredCount = 0;
+
+        Connection con;
+        MyConnection mcon = new MyConnection();
+        con = mcon.returnConnection();
+        String sql = "SELECT * FROM public.users";
+        Statement stm;
+        try {
+            stm = con.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                registeredCount++;
+                if (rs.getBoolean("report")) {
+                    reportedCount++;
+                }
+            }
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+
+        reportCountLbl.setText(reportedCount + "");
+        regCountLbl.setText(registeredCount + "");
     }
 
     /**
@@ -38,18 +69,11 @@ public class userReportFrame extends javax.swing.JFrame {
         mainPanel = new javax.swing.JPanel();
         usersTLabel = new javax.swing.JLabel();
         userTLabel = new javax.swing.JLabel();
-        number1Label = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        number2Label = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        number3Label = new javax.swing.JLabel();
+        regCountLbl = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        number4Label = new javax.swing.JLabel();
+        reportCountLbl = new javax.swing.JLabel();
+        chartBtn = new javax.swing.JButton();
         footer2Panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -60,12 +84,11 @@ public class userReportFrame extends javax.swing.JFrame {
         footer1Panel = new javax.swing.JPanel();
         agendaBtn = new javax.swing.JButton();
         nuevoBtn = new javax.swing.JButton();
-        graphicBtn = new javax.swing.JButton();
+        graphicBtn1 = new javax.swing.JButton();
         headerPanel = new javax.swing.JPanel();
         engineLabel = new javax.swing.JLabel();
         tempLabel = new javax.swing.JLabel();
         beta = new javax.swing.JLabel();
-        monitorBtn = new javax.swing.JButton();
         SalirBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -83,55 +106,34 @@ public class userReportFrame extends javax.swing.JFrame {
         userTLabel.setText("Registrados");
         mainPanel.add(userTLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, -1, -1));
 
-        number1Label.setFont(new java.awt.Font("SansSerif", 0, 95)); // NOI18N
-        number1Label.setText("1");
-        number1Label.setToolTipText("");
-        mainPanel.add(number1Label, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, -1, -1));
-
-        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
-        jLabel2.setText("Accesos");
-        mainPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, -1, -1));
-
-        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
-        jLabel3.setText("A la aplicación");
-        mainPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 90, -1, -1));
-
-        jLabel4.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
-        jLabel4.setText("este dia");
-        mainPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, -1, -1));
-
-        number2Label.setFont(new java.awt.Font("SansSerif", 0, 95)); // NOI18N
-        number2Label.setText("15");
-        mainPanel.add(number2Label, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 170, -1, -1));
-
-        jLabel6.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
-        jLabel6.setText("Accesos");
-        mainPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 70, -1, -1));
-
-        jLabel7.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
-        jLabel7.setText("A la aplicación");
-        jLabel7.setToolTipText("");
-        mainPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 90, -1, -1));
-
-        jLabel8.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
-        jLabel8.setText("Histórico");
-        mainPanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 110, -1, -1));
-
-        number3Label.setFont(new java.awt.Font("SansSerif", 0, 95)); // NOI18N
-        number3Label.setText("112");
-        mainPanel.add(number3Label, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 170, -1, -1));
+        regCountLbl.setFont(new java.awt.Font("SansSerif", 0, 95)); // NOI18N
+        regCountLbl.setText("0");
+        regCountLbl.setToolTipText("");
+        mainPanel.add(regCountLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, -1, -1));
 
         jLabel10.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
         jLabel10.setText("Usuarios");
-        mainPanel.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 70, -1, -1));
+        mainPanel.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, -1, -1));
 
         jLabel11.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
         jLabel11.setText("Reportados");
-        mainPanel.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 90, -1, -1));
+        mainPanel.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, -1, -1));
 
-        number4Label.setFont(new java.awt.Font("SansSerif", 0, 95)); // NOI18N
-        number4Label.setText("112");
-        mainPanel.add(number4Label, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 170, -1, -1));
+        reportCountLbl.setFont(new java.awt.Font("SansSerif", 0, 95)); // NOI18N
+        reportCountLbl.setText("0");
+        mainPanel.add(reportCountLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 170, -1, -1));
+
+        chartBtn.setBackground(new java.awt.Color(0, 0, 0));
+        chartBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        chartBtn.setText("Grafica de Usuarios");
+        chartBtn.setBorderPainted(false);
+        chartBtn.setPreferredSize(new java.awt.Dimension(330, 60));
+        chartBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chartBtnActionPerformed(evt);
+            }
+        });
+        mainPanel.add(chartBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 280, 380, -1));
 
         backgroundPanel.add(mainPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 1280, 340));
 
@@ -171,7 +173,6 @@ public class userReportFrame extends javax.swing.JFrame {
         reportBtn.setText("enviar.");
         reportBtn.setBorder(null);
         reportBtn.setBorderPainted(false);
-        reportBtn.setOpaque(true);
         reportBtn.setPreferredSize(new java.awt.Dimension(180, 50));
         reportBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,7 +186,6 @@ public class userReportFrame extends javax.swing.JFrame {
         undoReportBtn.setText("enviar.");
         undoReportBtn.setBorder(null);
         undoReportBtn.setBorderPainted(false);
-        undoReportBtn.setOpaque(true);
         undoReportBtn.setPreferredSize(new java.awt.Dimension(180, 50));
         undoReportBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -203,7 +203,6 @@ public class userReportFrame extends javax.swing.JFrame {
         agendaBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         agendaBtn.setText("Agenda");
         agendaBtn.setBorderPainted(false);
-        agendaBtn.setOpaque(true);
         agendaBtn.setPreferredSize(new java.awt.Dimension(180, 60));
         footer1Panel.add(agendaBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 100, -1, -1));
 
@@ -211,22 +210,20 @@ public class userReportFrame extends javax.swing.JFrame {
         nuevoBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         nuevoBtn.setText("Nuevo");
         nuevoBtn.setBorderPainted(false);
-        nuevoBtn.setOpaque(true);
         nuevoBtn.setPreferredSize(new java.awt.Dimension(180, 60));
         footer1Panel.add(nuevoBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, -1, -1));
 
-        graphicBtn.setBackground(new java.awt.Color(0, 0, 0));
-        graphicBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        graphicBtn.setText("ajustes usuario");
-        graphicBtn.setBorderPainted(false);
-        graphicBtn.setOpaque(true);
-        graphicBtn.setPreferredSize(new java.awt.Dimension(330, 60));
-        graphicBtn.addActionListener(new java.awt.event.ActionListener() {
+        graphicBtn1.setBackground(new java.awt.Color(0, 0, 0));
+        graphicBtn1.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
+        graphicBtn1.setText("ajustes usuario");
+        graphicBtn1.setBorderPainted(false);
+        graphicBtn1.setPreferredSize(new java.awt.Dimension(330, 60));
+        graphicBtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                graphicBtnActionPerformed(evt);
+                graphicBtn1ActionPerformed(evt);
             }
         });
-        footer1Panel.add(graphicBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 380, -1));
+        footer1Panel.add(graphicBtn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 380, -1));
 
         backgroundPanel.add(footer1Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 500, 640, 300));
 
@@ -249,27 +246,11 @@ public class userReportFrame extends javax.swing.JFrame {
         beta.setPreferredSize(new java.awt.Dimension(70, 30));
         headerPanel.add(beta, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, -1, -1));
 
-        monitorBtn.setBackground(new java.awt.Color(0, 0, 0));
-        monitorBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
-        monitorBtn.setForeground(new java.awt.Color(255, 255, 255));
-        monitorBtn.setText("monitor.");
-        monitorBtn.setBorder(null);
-        monitorBtn.setBorderPainted(false);
-        monitorBtn.setOpaque(true);
-        monitorBtn.setPreferredSize(new java.awt.Dimension(175, 60));
-        monitorBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                monitorBtnActionPerformed(evt);
-            }
-        });
-        headerPanel.add(monitorBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 60, -1, -1));
-
         SalirBtn.setBackground(new java.awt.Color(252, 202, 62));
         SalirBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         SalirBtn.setText("salir.");
         SalirBtn.setBorder(null);
         SalirBtn.setBorderPainted(false);
-        SalirBtn.setOpaque(true);
         SalirBtn.setPreferredSize(new java.awt.Dimension(175, 60));
         SalirBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -307,12 +288,6 @@ public class userReportFrame extends javax.swing.JFrame {
     private void undoReportTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoReportTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_undoReportTextFieldActionPerformed
-
-    private void monitorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monitorBtnActionPerformed
-        MainFrame mf = new MainFrame(userId, c);
-        mf.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_monitorBtnActionPerformed
 
     private void reportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportBtnActionPerformed
         int id = Integer.parseInt(reportTextField.getText());
@@ -352,11 +327,16 @@ public class userReportFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_undoReportBtnActionPerformed
 
-    private void graphicBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphicBtnActionPerformed
-        userSettings us = new userSettings(userId,c);
+    private void chartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartBtnActionPerformed
+        ChartUsers us = new ChartUsers();
+        us.setVisible(true);
+    }//GEN-LAST:event_chartBtnActionPerformed
+
+    private void graphicBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphicBtn1ActionPerformed
+        userSettings us = new userSettings(userId, c);
         us.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_graphicBtnActionPerformed
+    }//GEN-LAST:event_graphicBtn1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -388,7 +368,7 @@ public class userReportFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-               new userReportFrame(userId, c).setVisible(true);
+                new userReportFrame(userId, c).setVisible(true);
             }
         });
     }
@@ -398,29 +378,21 @@ public class userReportFrame extends javax.swing.JFrame {
     private javax.swing.JButton agendaBtn;
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JLabel beta;
+    private javax.swing.JButton chartBtn;
     private javax.swing.JLabel engineLabel;
     private javax.swing.JPanel footer1Panel;
     private javax.swing.JPanel footer2Panel;
-    private javax.swing.JButton graphicBtn;
+    private javax.swing.JButton graphicBtn1;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JButton monitorBtn;
     private javax.swing.JButton nuevoBtn;
-    private javax.swing.JLabel number1Label;
-    private javax.swing.JLabel number2Label;
-    private javax.swing.JLabel number3Label;
-    private javax.swing.JLabel number4Label;
+    private javax.swing.JLabel regCountLbl;
     private javax.swing.JButton reportBtn;
+    private javax.swing.JLabel reportCountLbl;
     private javax.swing.JTextField reportTextField;
     private javax.swing.JLabel tempLabel;
     private javax.swing.JButton undoReportBtn;
@@ -435,7 +407,8 @@ private void updateColors(int[] c) {
         SalirBtn.setBackground(color);
         agendaBtn.setBackground(color);
         nuevoBtn.setBackground(color);
-        graphicBtn.setBackground(color);
+        chartBtn.setBackground(color);
+        graphicBtn1.setBackground(color);
         beta.setBackground(color);
     }
 }
