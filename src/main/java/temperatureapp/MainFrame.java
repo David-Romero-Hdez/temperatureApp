@@ -18,6 +18,8 @@ import org.eclipse.paho.client.mqttv3.*;
 public class MainFrame extends javax.swing.JFrame implements MqttCallback {
 
     ArrayList readings = new ArrayList<Integer>();
+    MqttAsyncClient sampleClient;
+    
     static int userId;
     static Colors c = new Colors();
 
@@ -26,7 +28,47 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
      *
      * @param Id
      */
-    public void publish(MqttAsyncClient sampleClient, String topic, String content, int qos) {
+    public MainFrame(int Id, Colors c) {
+        userId = Id;
+        initComponents();
+
+        updateColors();
+
+        int qos = 2;
+        String broker = "tcp://broker.hivemq.com";
+        String clientId = "tempAppClient";
+
+        try {
+            sampleClient = new MqttAsyncClient(broker, clientId);
+            MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts.setCleanSession(true);
+
+            System.out.println("Connecting to broker: " + broker);
+            IMqttToken token = sampleClient.connect(connOpts);
+            System.out.println("Connected");
+            token.waitForCompletion();
+            sampleClient.setCallback(this);
+
+            sampleClient.subscribe("tempApp/#", qos);
+            System.out.println("Subscribed");
+            publish( "tempApp/motorState", "on", qos);
+            publish( "tempApp/minTemp", "20", qos);
+            publish( "tempApp/maxTemp", "30", qos);
+
+        } catch (Exception me) {
+            if (me instanceof MqttException) {
+                System.out.println("reason " + ((MqttException) me).getReasonCode());
+            }
+            System.out.println("msg " + me.getMessage());
+            System.out.println("loc " + me.getLocalizedMessage());
+            System.out.println("cause " + me.getCause());
+            System.out.println("excep " + me);
+            me.printStackTrace();
+        }
+
+    }
+    
+    public void publish( String topic, String content, int qos) {
         System.out.println(topic + "Publishing message: " + content);
         MqttMessage message = new MqttMessage(content.getBytes());
         message.setQos(qos);
@@ -44,49 +86,8 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         }
     }
 
-    public MainFrame(int Id, Colors c) {
-        userId = Id;
-        initComponents();
-
-        updateColors();
-
-        int qos = 2;
-        String broker = "tcp://broker.hivemq.com";
-        String clientId = "tempAppClient";
-
-        try {
-            MqttAsyncClient sampleClient = new MqttAsyncClient(broker, clientId);
-            MqttConnectOptions connOpts = new MqttConnectOptions();
-            connOpts.setCleanSession(true);
-
-            System.out.println("Connecting to broker: " + broker);
-            IMqttToken token = sampleClient.connect(connOpts);
-            System.out.println("Connected");
-            token.waitForCompletion();
-            sampleClient.setCallback(this);
-
-            sampleClient.subscribe("tempApp/#", qos);
-            System.out.println("Subscribed");
-            publish(sampleClient, "tempApp/motorState", "on", qos);
-            publish(sampleClient, "tempApp/minTemp", "20", qos);
-            publish(sampleClient, "tempApp/maxTemp", "30", qos);
-
-        } catch (Exception me) {
-            if (me instanceof MqttException) {
-                System.out.println("reason " + ((MqttException) me).getReasonCode());
-            }
-            System.out.println("msg " + me.getMessage());
-            System.out.println("loc " + me.getLocalizedMessage());
-            System.out.println("cause " + me.getCause());
-            System.out.println("excep " + me);
-            me.printStackTrace();
-        }
-
-    }
-
     public void connectionLost(Throwable arg0) {
         System.err.println("connection lost");
-
     }
 
     public void deliveryComplete(IMqttDeliveryToken arg0) {
@@ -425,6 +426,11 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         sendMaxBtn.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         sendMaxBtn.setText("enviar.");
         sendMaxBtn.setBorder(null);
+        sendMaxBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendMaxBtnActionPerformed(evt);
+            }
+        });
         FooterRight.add(sendMaxBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, 180, 50));
 
         jLabel13.setBackground(new java.awt.Color(255, 255, 255));
@@ -480,7 +486,7 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
     }//GEN-LAST:event_SalirBtnActionPerformed
 
     private void sendMinBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMinBtnActionPerformed
-        // TODO add your handling code here:
+        publish("tempApp/minTemp", minTempTF.getText(), 2);
     }//GEN-LAST:event_sendMinBtnActionPerformed
 
     private void userSettingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSettingsBtnActionPerformed
@@ -488,6 +494,10 @@ public class MainFrame extends javax.swing.JFrame implements MqttCallback {
         us.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_userSettingsBtnActionPerformed
+
+    private void sendMaxBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMaxBtnActionPerformed
+          publish("tempApp/maxTemp", maxTmpTF.getText(), 2);
+    }//GEN-LAST:event_sendMaxBtnActionPerformed
 
     /**
      * @param args the command line arguments
